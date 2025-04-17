@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,7 +19,7 @@ public class MainGame extends ApplicationAdapter {
     @Override
     public void create() {
         shape = new ShapeRenderer();
-        player = new Player();
+        player = new Player(this); // Pass MainGame instance
 
         // Create multiple platforms
         platforms = new Array<>();
@@ -29,8 +30,8 @@ public class MainGame extends ApplicationAdapter {
 
         // Set up the camera and viewport
         camera = new OrthographicCamera();
-        viewport = new FitViewport(800, 480, camera); // Set initial virtual resolution
-        viewport.apply(); // Apply the viewport settings
+        viewport = new FitViewport(800, 480, camera);
+        viewport.apply();
     }
 
     @Override
@@ -41,6 +42,11 @@ public class MainGame extends ApplicationAdapter {
         player.update(delta, platforms);
         camera.position.set(player.rect.x + player.rect.width / 2, player.rect.y + player.rect.height / 2, 0); // Center on player
         camera.update();
+
+        // Check for reset input
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) { // Press 'R' to reset
+            resetGame();
+        }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -54,15 +60,6 @@ public class MainGame extends ApplicationAdapter {
             platform.draw(shape);
         }
         shape.end();
-
-        // Debug rendering
-        shape.begin(ShapeRenderer.ShapeType.Line);
-        shape.setColor(1, 0, 0, 1); // Red outline for debugging
-        shape.rect(player.rect.x, player.rect.y, player.rect.width, player.rect.height); // Player outline
-        for (Platform platform : platforms) {
-            shape.rect(platform.getRect().x, platform.getRect().y, platform.getRect().width, platform.getRect().height); // Platform outlines
-        }
-        shape.end();
     }
 
     @Override
@@ -71,6 +68,17 @@ public class MainGame extends ApplicationAdapter {
         viewport.update(width, height);
         camera.position.set(player.rect.x + player.rect.width / 2, player.rect.y + player.rect.height / 2, 0); // Keep camera centered on player
         camera.update();
+    }
+
+    public void resetGame() {
+        // Reset player position
+        player.rect.x = 150; // Starting X position
+        player.rect.y = 200; // Starting Y position
+        player.yVelocity = 0; // Reset vertical velocity
+        player.onGround = false; // Ensure the player isn't on the ground initially
+
+        // Optionally reset platforms or other game elements here
+        // For example, if you have moving platforms or enemies, reset their positions.
     }
 
     @Override

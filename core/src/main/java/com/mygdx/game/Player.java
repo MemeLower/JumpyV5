@@ -9,12 +9,14 @@ import com.badlogic.gdx.utils.Array;
 public class Player {
     Rectangle rect;
     float speed = 200; // Horizontal speed
-    float jumpVelocity = 600; // Jump strength
+    float jumpVelocity = 800; // Jump strength
     float yVelocity = 0; // Vertical velocity
     float gravity = 1500; // Gravity strength
     boolean onGround = false;
+    MainGame mainGame; // Reference to MainGame
 
-    public Player() {
+    public Player(MainGame mainGame) {
+        this.mainGame = mainGame; // Store the MainGame reference
         rect = new Rectangle(150, 200, 30, 50); // Start above the platform
     }
 
@@ -50,6 +52,12 @@ public class Player {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && onGround) {
             yVelocity = jumpVelocity;
             onGround = false;
+        }
+
+        // Fall detection
+        if (rect.y < -100) { // Player falls below the screen
+            System.out.println("Player fell off! Resetting...");
+            mainGame.resetGame(); // Call resetGame() from MainGame
         }
     }
 

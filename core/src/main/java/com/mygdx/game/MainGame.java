@@ -23,10 +23,15 @@ public class MainGame extends ApplicationAdapter {
 
         // Create multiple platforms
         platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 300, 20)); // Ground platform
-        platforms.add(new Platform(400, 250, 200, 20)); // Higher platform
-        platforms.add(new Platform(700, 400, 150, 20)); // Even higher platform
-        platforms.add(new Platform(1000, 550, 250, 20)); // Final platform
+        platforms.add(new Platform(100, 100, 300, 20));
+        platforms.add(new Platform(600, 100, 300, 20));
+        platforms.add(new Platform(1200, 200, 100, 20));
+        platforms.add(new Platform(1700, 50, 300, 20));
+
+        platforms.add(new Platform(2200, 100, 300, 20));
+        platforms.add(new Platform(2700, 200, 50, 20));
+        platforms.add(new Platform(3100,300, 200, 20));
+        platforms.add(new Platform(3500, 100, 50, 20));
 
         // Set up the camera and viewport
         camera = new OrthographicCamera();

@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Player {
     Rectangle rect;
-    float speed = 200; // Horizontal speed
+    float speed = 500; // Horizontal speed
     float jumpVelocity = 750; // Jump strength
     float yVelocity = 0; // Vertical velocity
     float gravity = 1500; // Gravity strength
@@ -49,7 +49,7 @@ public class Player {
         }
 
         // Jump
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W) && onGround) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
             yVelocity = jumpVelocity;
             onGround = false;
         }

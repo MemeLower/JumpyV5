@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 public class Player {
     Rectangle rect;
     float speed = 200; // Horizontal speed
-    float jumpVelocity = 800; // Jump strength
+    float jumpVelocity = 750; // Jump strength
     float yVelocity = 0; // Vertical velocity
     float gravity = 1500; // Gravity strength
     boolean onGround = false;
@@ -22,10 +22,10 @@ public class Player {
 
     public void update(float delta, Array<Platform> platforms) {
         // Horizontal movement
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             rect.x -= speed * delta;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             rect.x += speed * delta;
         }
 
@@ -49,7 +49,7 @@ public class Player {
         }
 
         // Jump
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && onGround) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W) && onGround) {
             yVelocity = jumpVelocity;
             onGround = false;
         }

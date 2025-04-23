@@ -8,20 +8,19 @@ import com.badlogic.gdx.utils.Array;
 
 public class Player {
     Rectangle rect;
-    float speed = 500; // Horizontal speed
-    float jumpVelocity = 750; // Jump strength
-    float yVelocity = 0; // Vertical velocity
-    float gravity = 1500; // Gravity strength
+    float speed = 500;
+    float jumpVelocity = 750;
+    float yVelocity = 0;
+    float gravity = 1500;
     boolean onGround = false;
-    MainGame mainGame; // Reference to MainGame
+    MainGame mainGame;
 
     public Player(MainGame mainGame) {
-        this.mainGame = mainGame; // Store the MainGame reference
-        rect = new Rectangle(150, 200, 30, 50); // Start above the platform
+        this.mainGame = mainGame;
+        rect = new Rectangle(150, 200, 30, 50);
     }
 
     public void update(float delta, Array<Platform> platforms) {
-        // Horizontal movement
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             rect.x -= speed * delta;
         }
@@ -29,40 +28,36 @@ public class Player {
             rect.x += speed * delta;
         }
 
-        // Gravity
-        yVelocity -= gravity * delta; // Apply gravity
+        yVelocity -= gravity * delta;
         rect.y += yVelocity * delta;
 
-        // Collision with platforms
-        onGround = false; // Assume not on ground initially
+        onGround = false;
         for (Platform platform : platforms) {
-            if (yVelocity <= 0 && // Falling downward
-                rect.y > platform.getRect().y + platform.getRect().height - 5 && // Near the platform's top
-                rect.y + yVelocity * delta <= platform.getRect().y + platform.getRect().height && // Feet touch the platform
-                rect.x + rect.width > platform.getRect().x && // Horizontally overlapping
+            if (yVelocity <= 0 &&
+                rect.y > platform.getRect().y + platform.getRect().height - 5 &&
+                rect.y + yVelocity * delta <= platform.getRect().y + platform.getRect().height &&
+                rect.x + rect.width > platform.getRect().x &&
                 rect.x < platform.getRect().x + platform.getRect().width) {
-                rect.y = platform.getRect().y + platform.getRect().height; // Snap to platform
-                yVelocity = 0; // Stop falling
-                onGround = true; // Allow jumping again
-                break; // Stop checking other platforms
+                rect.y = platform.getRect().y + platform.getRect().height;
+                yVelocity = 0;
+                onGround = true;
+                break;
             }
         }
 
-        // Jump
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
             yVelocity = jumpVelocity;
             onGround = false;
         }
 
-        // Fall detection
-        if (rect.y < -100) { // Player falls below the screen
+        if (rect.y < -100) {
             System.out.println("Player fell off! Resetting...");
-            mainGame.resetGame(); // Call resetGame() from MainGame
+            mainGame.resetGame();
         }
     }
 
     public void draw(ShapeRenderer shape) {
-        shape.setColor(0, 1, 0, 1); // Green
+        shape.setColor(0, 1, 0, 1);
         shape.rect(rect.x, rect.y, rect.width, rect.height);
     }
 }

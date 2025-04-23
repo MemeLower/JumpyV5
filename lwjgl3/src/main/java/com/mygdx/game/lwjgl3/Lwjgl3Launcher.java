@@ -17,7 +17,7 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-        configuration.setTitle("TestGameee");
+        configuration.setTitle("SigmaBallz");
         configuration.useVsync(true); // Enable vertical sync to match monitor refresh rate
         configuration.setWindowedMode(1000, 600); // Default window size
         configuration.setResizable(false); // Allow resizing the window

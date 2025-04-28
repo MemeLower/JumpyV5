@@ -22,7 +22,7 @@ public class MainGame extends ApplicationAdapter {
         player = new Player(this);
 
         platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 300, 20));
+        platforms.add(new Platform(100, 100, 300, 20));     //platforme in Array gespeichert
         platforms.add(new Platform(600, 100, 300, 20));
         platforms.add(new Platform(1200, 200, 100, 20));
         platforms.add(new Platform(1700, 50, 300, 20));
@@ -55,7 +55,7 @@ public class MainGame extends ApplicationAdapter {
         shape.setProjectionMatrix(camera.combined);
 
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        player.draw(shape);
+        player.draw(shape);     //spieler erstellen
         for (Platform platform : platforms) {
             platform.draw(shape);
         }

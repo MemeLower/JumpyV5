@@ -17,18 +17,18 @@ public class Player {
 
     public Player(MainGame mainGame) {
         this.mainGame = mainGame;
-        rect = new Rectangle(150, 200, 30, 50);
+        rect = new Rectangle(150, 200, 30, 50); //startpunkt
     }
 
     public void update(float delta, Array<Platform> platforms) {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {     //links
             rect.x -= speed * delta;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {     //rechts
             rect.x += speed * delta;
         }
 
-        yVelocity -= gravity * delta;
+        yVelocity -= gravity * delta;       //gravity
         rect.y += yVelocity * delta;
 
         onGround = false;
@@ -45,19 +45,19 @@ public class Player {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {     //springen
             yVelocity = jumpVelocity;
             onGround = false;
         }
 
-        if (rect.y < -100) {
+        if (rect.y < -100) {        //automatisches reset bei fall
             System.out.println("Player fell off! Resetting...");
             mainGame.resetGame();
         }
     }
 
     public void draw(ShapeRenderer shape) {
-        shape.setColor(0, 1, 0, 1);
+        shape.setColor(1, 0, 1, 1);     //farbe des Characters
         shape.rect(rect.x, rect.y, rect.width, rect.height);
     }
 }

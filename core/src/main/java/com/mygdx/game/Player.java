@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 public class Player {
     // Charakter Variablen/Eigenschaften
     Rectangle rect;
-    float speed = 500;      //einheit???
+    float speed = 500;      //pixel pro sekunde
     float jumpVelocity = 750;
     float yVelocity = 0;
     float gravity = 1500;

@@ -14,6 +14,13 @@ Funktionalitäten:
 =) Reset mit "R"
 
 
+
+#
+Was gemacht wurde, aber noch nicht in dieser Version ist
+
+=) 
+
+Notizen: besiegen
 #
 Was noch fehlt:
 

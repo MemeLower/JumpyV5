@@ -18,7 +18,7 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        shape = new ShapeRenderer();
+        shape = new ShapeRenderer();    // Rechteck für Charakter wird visualisiert
         player = new Player(this);
 
         platforms = new Array<>();

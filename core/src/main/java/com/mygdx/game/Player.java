@@ -6,10 +6,22 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * public class
+ */
 public class Player {
-    // Charakter Variablen/Eigenschaften
+    /**
+     * Charakter Variablen/Eigenschaften
+     */
     Rectangle rect;
-    float speed = 500;      //pixel pro sekunde
+    /**
+     * Pixel pro Sekunde
+     */
+    float speed = 500;
+
+    /**
+     * spring variable
+     */
     float jumpVelocity = 750;
     float yVelocity = 0;
     float gravity = 1500;

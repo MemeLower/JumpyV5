@@ -13,6 +13,7 @@ public class MainGame extends ApplicationAdapter {
     ShapeRenderer shape;
     Player player;
     Array<Platform> platforms;
+    Array<Obstacle> obstacles;
     OrthographicCamera camera;
     FitViewport viewport;
 
@@ -21,16 +22,16 @@ public class MainGame extends ApplicationAdapter {
         shape = new ShapeRenderer();    // Rechteck für Charakter wird visualisiert
         player = new Player(this);
 
-        platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 300, 20));     //platforme in Array gespeichert
-        platforms.add(new Platform(600, 100, 300, 20));
-        platforms.add(new Platform(1200, 200, 100, 20));
-        platforms.add(new Platform(1700, 50, 300, 20));
+        platforms = new Array<>();    //balken
+        platforms.add(new Platform(100, 100, 300, 20));
+        platforms.add(new Platform(400, 250, 200, 20));
+        platforms.add(new Platform(700, 400, 150, 20));
+        platforms.add(new Platform(1000, 550, 250, 20));
 
-        platforms.add(new Platform(2200, 100, 300, 20));
-        platforms.add(new Platform(2700, 200, 50, 20));
-        platforms.add(new Platform(3100,300, 200, 20));
-        platforms.add(new Platform(3500, 100, 50, 20));
+        obstacles = new Array<>();      //hindernisse
+        obstacles.add(new Obstacle(200, 100, 30, 30));
+        obstacles.add(new Obstacle(500, 250, 30, 30));
+
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(800, 480, camera);

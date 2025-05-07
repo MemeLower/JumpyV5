@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Input;
@@ -13,6 +15,7 @@ public class Player {
     /**
      * Charakter Variablen/Eigenschaften
      */
+    Sprite sprite;
     Rectangle rect;
     /**
      * Pixel pro Sekunde
@@ -31,6 +34,7 @@ public class Player {
     public Player(MainGame mainGame) {
         this.mainGame = mainGame;
         rect = new Rectangle(150, 200, 30, 50); //startpunkt
+        sprite = new Sprite(new Texture(Gdx.files.internal("frame_0_delay-0.04s.png")));
     }
 
     public void update(float delta, Array<Platform> platforms) {

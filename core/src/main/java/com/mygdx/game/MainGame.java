@@ -4,10 +4,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport; // Add this import
+import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.awt.*;
 
 public class MainGame extends ApplicationAdapter {
     ShapeRenderer shape;
@@ -56,9 +60,15 @@ public class MainGame extends ApplicationAdapter {
         shape.setProjectionMatrix(camera.combined);
 
         shape.begin(ShapeRenderer.ShapeType.Filled);
-        player.draw(shape);     //spieler erstellen
+        player.draw(shape);  //spieler erstellen
         for (Platform platform : platforms) {
             platform.draw(shape);
+        }
+        for (Obstacle obstacle : obstacles) {
+            obstacle.draw(shape);
+            if (player.rect.overlaps(obstacle.getRect())){
+                resetGame();
+            }
         }
         shape.end();
     }
@@ -71,7 +81,7 @@ public class MainGame extends ApplicationAdapter {
     }
 
     public void resetGame() {
-        player.rect.x = 150;
+        player.rect.x = 80;
         player.rect.y = 200;
         player.yVelocity = 0;
         player.onGround = false;

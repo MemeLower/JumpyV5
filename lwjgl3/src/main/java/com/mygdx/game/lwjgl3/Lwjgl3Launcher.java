@@ -17,10 +17,10 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-        configuration.setTitle("SkibiddddddddddddddddiSigmaBallz");
+        configuration.setTitle("raaaaaaaaa");
         configuration.useVsync(true); // Enable vertical sync to match monitor refresh rate
-        configuration.setWindowedMode(900, 600); // Default window size
-        configuration.setResizable(false); // Allow resizing the window
+        configuration.setWindowedMode(800, 600); // Default window size
+        configuration.setResizable(true); // Allow resizing the window
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
         return configuration;
     }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Obstacle {
     private Rectangle rect;
 
-    public Obstacle(float x, float y, float width, float height) {      //constructor
+    public Obstacle(float x, float y, float width, float height) {
         rect = new Rectangle(x, y, width, height);
     }
 
@@ -14,8 +14,8 @@ public class Obstacle {
         return rect;
     }
 
-    public void draw(ShapeRenderer shape) {     //obstacle
-        shape.setColor(1, 0, 0, 1);
+    public void draw(ShapeRenderer shape) {
+        shape.setColor(1, 0, 0, 1); // Rot
         shape.rect(rect.x, rect.y, rect.width, rect.height);
     }
 }

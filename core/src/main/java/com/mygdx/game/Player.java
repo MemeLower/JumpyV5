@@ -8,47 +8,30 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
-/**
- * public class
- */
 public class Player {
-    /**
-     * Charakter Variablen/Eigenschaften
-     */
     Sprite sprite;
     Rectangle rect;
-    /**
-     * Pixel pro Sekunde
-     */
     float speed = 500;
-
-    /**
-     * spring variable
-     */
     float jumpVelocity = 750;
     float yVelocity = 0;
     float gravity = 1500;
     boolean onGround = false;
-    MainGame mainGame;
+    GameScreen gameScreen;
 
-    public Player(MainGame mainGame) {
-        this.mainGame = mainGame;
-        rect = new Rectangle(150, 200, 30, 50); //startpunkt
-        sprite = new Sprite(new Texture(Gdx.files.internal("frame_0_delay-0.04s.png")));
+    public Player(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+        rect = new Rectangle(150, 200, 30, 50);
+        //sprite = new Sprite(new Texture(Gdx.files.internal("frame_0_delay-0.04s.png")));
     }
 
     public void update(float delta, Array<Platform> platforms) {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {     //links
-            rect.x -= speed * delta;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {     //rechts
-            rect.x += speed * delta;
-        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) rect.x -= speed * delta;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) rect.x += speed * delta;
 
-        yVelocity -= gravity * delta;       //gravity
+        yVelocity -= gravity * delta;
         rect.y += yVelocity * delta;
-
         onGround = false;
+
         for (Platform platform : platforms) {
             if (yVelocity <= 0 &&
                 rect.y > platform.getRect().y + platform.getRect().height - 5 &&
@@ -62,19 +45,19 @@ public class Player {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {     //springen
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
             yVelocity = jumpVelocity;
             onGround = false;
         }
 
-        if (rect.y < -100) {        //automatisches reset bei fall
+        if (rect.y < -100) {
             System.out.println("Player fell off! Resetting...");
-            mainGame.resetGame();
+            gameScreen.resetGame();
         }
     }
 
     public void draw(ShapeRenderer shape) {
-        shape.setColor(1, 0, 1, 1);     //farbe des Characters
+        shape.setColor(1, 0, 1, 1);
         shape.rect(rect.x, rect.y, rect.width, rect.height);
     }
 }

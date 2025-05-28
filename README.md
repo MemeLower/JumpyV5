@@ -1,36 +1,39 @@
+# Jumpy – Ein 2D Jump-and-Run Spiel
 
-# Jumpy
+**Jumpy** ist ein einfaches, aber spaßiges 2D Jump-and-Run-Spiel im Stil klassischer Spiele wie *Super Mario*. Tauche ein in die Welt des Plattformenspringens und meistere Hindernisse!
 
-Jumpy ist ein 2D-Jump and Run Game, ähnlich zu Super Mario
+---
 
+## Derzeitige Funktionen
 
-Funktionalitäten:
+- **Springen**  
+- **Bewegung nach links und rechts**  
+- **Automatisches Reset, wenn du von einer Plattform fällst**  
+- **Manuelles Reset mit der Taste „R“**
 
-=) Springen
-=) Rechts, Links
-
-=) automatisches Reset bei Fall von Platform
-
-=) Reset mit "R"
-
-
-
-#
-Was gemacht wurde, aber noch nicht in dieser Version ist
-
-=) 
-
-Notizen: besiegen
-#
-Was noch fehlt:
+- **Hauptmenü**
+- **Mehrere wählbare Levels**
+- **Endless Mode**
 
 
-=) Menü
+---
 
-=) Ziel(Level-Ende)
+## Implementiert
 
-=) verschiedene auswählbare Levels
+- */*
 
-=) besseres Level und Charakter Design
+---
 
+## notes
 
+- **Besiegen**
+
+---
+
+## Offene Punkte
+
+  
+- **Ziel oder Level-Ende implementieren**   
+- **Verbessertes Design für Charakter und Levels**
+
+---

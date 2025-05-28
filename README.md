@@ -33,7 +33,16 @@
 ## Offene Punkte
 
   
-- **Ziel oder Level-Ende implementieren**   
-- **Verbessertes Design für Charakter und Levels**
+- **ziel/level ende**   
+- **verbessertes design für character, level und menu (Tiled Maps support?)**
+- **Highscore/Distance counter & Username eingabe für Leaderboard (endless mode)**
+
+- **Power ups?**
+
+- **sound effects + background music(menü,level,endless mode)**
+
+- **more levels?**
+
+- **healthbar, fullscreen, pause button?**
 
 ---

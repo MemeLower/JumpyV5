@@ -25,11 +25,13 @@ public class MainMenuScreen implements Screen {
 
         TextButton startButton = new TextButton("Start Game", skin);
         TextButton quitButton = new TextButton("Quit", skin);
+        Label title = new Label("Firat war da", skin);
 
         table.add(startButton).fillX().uniformX().pad(20);
         table.row();
         table.add(quitButton).fillX().uniformX().pad(20);
-
+        table.row();
+        table.add(title).fillX().uniformX().pad(20);
         startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

@@ -9,38 +9,43 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class MainMenuScreen implements Screen {
+public class UsernameInputScreen implements Screen {
     final MainGame game;
     Stage stage;
-    Skin skin;
+    TextField usernameField;
 
-    public MainMenuScreen(final MainGame game) {
+    public UsernameInputScreen(final MainGame game) {
         this.game = game;
-        this.skin = new Skin(Gdx.files.internal("uiskin.json"));
         this.stage = new Stage(new ScreenViewport());
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton startButton = new TextButton("Start Game", skin);
-        TextButton quitButton = new TextButton("Quit", skin);
+        Label label = new Label("Enter Username", skin);
+        usernameField = new TextField("", skin);
+        TextButton startButton = new TextButton("Start Endless Mode", skin);
+        TextButton backButton = new TextButton("Back", skin);
 
-        table.add(startButton).fillX().uniformX().pad(20);
-        table.row();
-        table.add(quitButton).fillX().uniformX().pad(20);
+        table.add(label).padBottom(20).row();
+        table.add(usernameField).width(300).padBottom(20).row();
+        table.add(startButton).padBottom(20).row();
+        table.add(backButton);
 
         startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new LevelSelectScreen(game));
+                String name = usernameField.getText();
+                if (name.isEmpty()) name = "Guest";
+                game.startEndlessModeWithUsername(name);
             }
         });
 
-        quitButton.addListener(new ChangeListener() {
+        backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit();
+                game.setScreen(new LevelSelectScreen(game));
             }
         });
 
@@ -51,7 +56,7 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Math.min(delta, 1 / 30f));
+        stage.act(Math.min(delta, 0.016f));
         stage.draw();
     }
 
@@ -61,20 +66,23 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
     public void show() {}
 
     @Override
     public void hide() {}
 
     @Override
-    public void pause() {}
-
-    @Override
-    public void resume() {}
-
-    @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
     }
 }

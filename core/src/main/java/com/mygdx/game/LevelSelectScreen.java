@@ -53,7 +53,7 @@ public class LevelSelectScreen implements Screen {
         endlessModeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(createEndlessMode());
+                game.setScreen(new UsernameInputScreen(game));
             }
         });
 
@@ -93,14 +93,6 @@ public class LevelSelectScreen implements Screen {
         obstacles.add(new Obstacle(950, 400, 30, 30));
 
         return new GameScreen(game, platforms, obstacles);
-    }
-
-    private GameScreen createEndlessMode() {
-        Array<Platform> platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 300, 20));
-        platforms.add(new Platform(400, 250, 200, 20));
-
-        return new EndlessGameScreen(game, platforms);
     }
 
     @Override

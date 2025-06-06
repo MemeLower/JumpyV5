@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,11 +16,11 @@ public class Player {
     float gravity = 1500;
     boolean onGround = false;
     GameScreen gameScreen;
+    MainGame mainGame;
 
-    public Player(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public Player(MainGame mainGame) {
+        this.mainGame = mainGame;
         rect = new Rectangle(150, 200, 30, 50);
-        //sprite = new Sprite(new Texture(Gdx.files.internal("frame_0_delay-0.04s.png")));
     }
 
     public void update(float delta, Array<Platform> platforms) {
@@ -52,7 +51,7 @@ public class Player {
 
         if (rect.y < -100) {
             System.out.println("Player fell off! Resetting...");
-            gameScreen.resetGame();
+            mainGame.resetGame(); // <-- This might be causing the crash
         }
     }
 

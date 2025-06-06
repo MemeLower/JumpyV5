@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
@@ -28,14 +26,15 @@ public class GameScreen implements Screen {
         this.obstacles = obstacles;
 
         shape = new ShapeRenderer();
-        player = new Player(this); // Pass GameScreen to Player
+        player = new Player(game);
+        resetPlayer();
 
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(800, 480, camera);
+        viewport = new FitViewport(800, 480, camera);
     }
 
     private void resetPlayer() {
-        player.rect.x = 150;
+        player.rect.x = 80;
         player.rect.y = 200;
         player.yVelocity = 0;
         player.onGround = false;

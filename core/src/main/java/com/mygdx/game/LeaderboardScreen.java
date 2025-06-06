@@ -8,13 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import java.util.List;
 
-public class MainMenuScreen implements Screen {
+public class LeaderboardScreen implements Screen {
     final MainGame game;
     Stage stage;
     Skin skin;
 
-    public MainMenuScreen(final MainGame game) {
+    public LeaderboardScreen(MainGame game) {
         this.game = game;
         this.skin = new Skin(Gdx.files.internal("uiskin.json"));
         this.stage = new Stage(new ScreenViewport());
@@ -23,24 +24,24 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton startButton = new TextButton("Start Game", skin);
-        TextButton quitButton = new TextButton("Quit", skin);
+        Label title = new Label("Top Scores", skin, "big");
+        table.add(title).padBottom(30).row();
 
-        table.add(startButton).fillX().uniformX().pad(20);
-        table.row();
-        table.add(quitButton).fillX().uniformX().pad(20);
+        List<ScoreEntry> scores = game.loadHighScores();
 
-        startButton.addListener(new ChangeListener() {
+        for (int i = 0; i < Math.min(scores.size(), 10); i++) {
+            ScoreEntry entry = scores.get(i);
+            Label scoreLabel = new Label((i + 1) + ". " + entry.username + " - " + (int) entry.score, skin);
+            table.add(scoreLabel).padBottom(10).row();
+        }
+
+        TextButton backButton = new TextButton("Back", skin);
+        table.add(backButton);
+
+        backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new LevelSelectScreen(game));
-            }
-        });
-
-        quitButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit();
+                game.setScreen(new MainMenuScreen(game));
             }
         });
 
@@ -51,7 +52,7 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Math.min(delta, 1 / 30f));
+        stage.act(Math.min(delta, 0.016f));
         stage.draw();
     }
 

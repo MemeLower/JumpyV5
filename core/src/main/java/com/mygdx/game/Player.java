@@ -12,7 +12,7 @@ public class Player {
     Sprite sprite;
     Rectangle rect;
     float speed = 500;
-    float jumpVelocity = 750;
+    float jumpVelocity = 750; // 750
     float yVelocity = 0;
     float gravity = 1500;
     boolean onGround = false;

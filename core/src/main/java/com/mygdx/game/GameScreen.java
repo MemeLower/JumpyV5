@@ -94,18 +94,41 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        // Draw each layer
+        // Draw far background (single centered image)
         batch.draw(backgroundFar,
             camX * farFactor - backgroundFar.getWidth() / 2, 0,
             backgroundFar.getWidth(), backgroundFar.getHeight());
 
-        batch.draw(treesMid,
-            camX * midFactor - treesMid.getWidth() / 2, 0,
-            treesMid.getWidth(), treesMid.getHeight());
+        // Draw middle layer (trees) with repeating pattern
+        float midX = camX * midFactor;
+        float midWidth = treesMid.getWidth();
+        float midStartX = midX - midWidth / 2;
+        float midEndX = midX + midWidth / 2;
+        
+        // Calculate how many copies we need to draw
+        float viewportWidth = viewport.getWorldWidth();
+        float midStartDrawX = midStartX - viewportWidth;
+        float midEndDrawX = midEndX + viewportWidth;
+        
+        // Draw multiple copies of the middle layer
+        for (float x = midStartDrawX; x < midEndDrawX; x += midWidth) {
+            batch.draw(treesMid, x, 0, midWidth, treesMid.getHeight());
+        }
 
-        batch.draw(foregroundNear,
-            camX * nearFactor - foregroundNear.getWidth() / 2, 0,
-            foregroundNear.getWidth(), foregroundNear.getHeight());
+        // Draw foreground layer with repeating pattern
+        float nearX = camX * nearFactor;
+        float nearWidth = foregroundNear.getWidth();
+        float nearStartX = nearX - nearWidth / 2;
+        float nearEndX = nearX + nearWidth / 2;
+        
+        // Calculate how many copies we need to draw
+        float nearStartDrawX = nearStartX - viewportWidth;
+        float nearEndDrawX = nearEndX + viewportWidth;
+        
+        // Draw multiple copies of the foreground layer
+        for (float x = nearStartDrawX; x < nearEndDrawX; x += nearWidth) {
+            batch.draw(foregroundNear, x, 0, nearWidth, foregroundNear.getHeight());
+        }
 
         batch.end();
         // ---- END OF PARALLAX BACKGROUND ----

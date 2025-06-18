@@ -49,9 +49,9 @@ public class GameOverScreen implements Screen {
         TextButton saveButton = new TextButton("Save Score", skin);
         mainTable.add(saveButton).width(200).padBottom(20).row();
 
-        // Skip button
-        TextButton skipButton = new TextButton("Skip", skin);
-        mainTable.add(skipButton).width(200).padBottom(20).row();
+        // Retry button
+        TextButton retryButton = new TextButton("Retry", skin);
+        mainTable.add(retryButton).width(200).padBottom(20).row();
 
         // Leaderboard
         Label leaderboardLabel = new Label("Leaderboard", skin);
@@ -78,10 +78,14 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        skipButton.addListener(new ChangeListener() {
+        retryButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(new MainMenuScreen(game));
+                // Create new initial platforms for endless mode
+                Array<Platform> initialPlatforms = new Array<>();
+                initialPlatforms.add(new Platform(100, 100, 300, 20));
+                initialPlatforms.add(new Platform(400, 250, 200, 20));
+                game.setScreen(new EndlessGameScreen(game, initialPlatforms));
             }
         });
 

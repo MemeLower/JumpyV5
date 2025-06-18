@@ -70,29 +70,46 @@ public class LevelSelectScreen implements Screen {
     private GameScreen createLevel1() {
         Array<Platform> platforms = new Array<>();
         platforms.add(new Platform(100, 100, 300, 20));
-        platforms.add(new Platform(400, 250, 200, 20));
-        platforms.add(new Platform(700, 400, 150, 20));
-        platforms.add(new Platform(1000, 550, 250, 20));
+        platforms.add(new Platform(450, 150, 200, 20));
+        platforms.add(new Platform(700, 200, 150, 20));
+        platforms.add(new Platform(900, 250, 200, 20));
+        platforms.add(new Platform(1150, 200, 150, 20));
+        platforms.add(new Platform(1350, 150, 200, 20));
+        platforms.add(new Platform(1600, 100, 300, 20));
 
         Array<Obstacle> obstacles = new Array<>();
         obstacles.add(new Obstacle(200, 100, 30, 30));
-        obstacles.add(new Obstacle(500, 250, 30, 30));
+        obstacles.add(new Obstacle(500, 150, 30, 30));
+        obstacles.add(new Obstacle(800, 200, 30, 30));
+        obstacles.add(new Obstacle(1200, 200, 30, 30));
 
-        return new GameScreen(game, platforms, obstacles);
+        Goal goal = new Goal(1800, 100, 40, 60);
+
+        return new GameScreen(game, platforms, obstacles, goal);
     }
 
     private GameScreen createLevel2() {
         Array<Platform> platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 200, 20));
-        platforms.add(new Platform(350, 200, 150, 20));
-        platforms.add(new Platform(600, 300, 100, 20));
-        platforms.add(new Platform(900, 400, 200, 20));
+        platforms.add(new Platform(100, 100, 250, 20));
+        platforms.add(new Platform(400, 150, 200, 20));
+        platforms.add(new Platform(650, 200, 150, 20));
+        platforms.add(new Platform(850, 150, 200, 20));
+        platforms.add(new Platform(1100, 200, 150, 20));
+        platforms.add(new Platform(1300, 150, 200, 20));
+        platforms.add(new Platform(1550, 100, 250, 20));
+        platforms.add(new Platform(1850, 150, 200, 20));
 
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(400, 200, 30, 30));
-        obstacles.add(new Obstacle(950, 400, 30, 30));
+        obstacles.add(new Obstacle(450, 150, 30, 30));
+        obstacles.add(new Obstacle(700, 200, 30, 30));
+        obstacles.add(new Obstacle(900, 150, 30, 30));
+        obstacles.add(new Obstacle(1150, 200, 30, 30));
+        obstacles.add(new Obstacle(1350, 150, 30, 30));
+        obstacles.add(new Obstacle(1600, 100, 30, 30));
 
-        return new GameScreen(game, platforms, obstacles);
+        Goal goal = new Goal(2000, 150, 40, 60);
+
+        return new GameScreen(game, platforms, obstacles, goal);
     }
 
     private GameScreen createEndlessMode() {

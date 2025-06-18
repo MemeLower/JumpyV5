@@ -20,18 +20,20 @@ public class GameScreen implements Screen {
     Player player;
     Array<Platform> platforms;
     Array<Obstacle> obstacles;
+    Goal goal;
     OrthographicCamera camera;
     Viewport viewport;
 
     // Parallax background textures
     private Texture backgroundFar;
-    private Texture treesMid;
-    private Texture foregroundNear;
+    private Texture mountainsMid;
+    private Texture treesNear;
 
-    public GameScreen(MainGame game, Array<Platform> platforms, Array<Obstacle> obstacles) {
+    public GameScreen(MainGame game, Array<Platform> platforms, Array<Obstacle> obstacles, Goal goal) {
         this.game = game;
         this.platforms = platforms;
         this.obstacles = obstacles;
+        this.goal = goal;
 
         shape = new ShapeRenderer();
         player = new Player(this); // Pass GameScreen to Player
@@ -57,8 +59,8 @@ public class GameScreen implements Screen {
 
         // Load background textures
         backgroundFar = new Texture("background_far.png");
-        treesMid = new Texture("trees_mid.png");
-        foregroundNear = new Texture("foreground_near.png");
+        mountainsMid = new Texture("trees_mid.png"); // This is actually mountains
+        treesNear = new Texture("foreground_near.png"); // This is actually trees
 
         resetPlayer();
 
@@ -87,47 +89,45 @@ public class GameScreen implements Screen {
         // ---- PARALLAX BACKGROUND DRAWING ----
         float camX = camera.position.x;
 
-        float farFactor = 1f;
-        float midFactor = 0.9f;
-        float nearFactor = 0.5f;
+        // Parallax factors
+        float farFactor = 1.0f;     // Far background moves at camera speed
+        float midFactor = 0.7f;     // Mountains move slower
+        float nearFactor = 0.3f;    // Trees move even slower
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
         // Draw far background (single centered image)
+        float farX = camX * farFactor;
         batch.draw(backgroundFar,
-            camX * farFactor - backgroundFar.getWidth() / 2, 0,
+            farX - backgroundFar.getWidth() / 2, 0,
             backgroundFar.getWidth(), backgroundFar.getHeight());
 
-        // Draw middle layer (trees) with repeating pattern
+        // Draw middle layer (mountains) with repeating pattern
         float midX = camX * midFactor;
-        float midWidth = treesMid.getWidth();
-        float midStartX = midX - midWidth / 2;
-        float midEndX = midX + midWidth / 2;
-        
-        // Calculate how many copies we need to draw
+        float midWidth = mountainsMid.getWidth();
         float viewportWidth = viewport.getWorldWidth();
-        float midStartDrawX = midStartX - viewportWidth;
-        float midEndDrawX = midEndX + viewportWidth;
         
-        // Draw multiple copies of the middle layer
-        for (float x = midStartDrawX; x < midEndDrawX; x += midWidth) {
-            batch.draw(treesMid, x, 0, midWidth, treesMid.getHeight());
+        // Calculate visible range for mountains - extremely large coverage for endless mode
+        float midStartX = midX - viewportWidth * 20.0f;
+        float midEndX = midX + viewportWidth * 20.0f;
+        
+        // Draw mountains
+        for (float x = midStartX; x < midEndX; x += midWidth) {
+            batch.draw(mountainsMid, x, 0, midWidth, mountainsMid.getHeight());
         }
 
-        // Draw foreground layer with repeating pattern
+        // Draw foreground layer (trees) with repeating pattern
         float nearX = camX * nearFactor;
-        float nearWidth = foregroundNear.getWidth();
-        float nearStartX = nearX - nearWidth / 2;
-        float nearEndX = nearX + nearWidth / 2;
+        float nearWidth = treesNear.getWidth();
         
-        // Calculate how many copies we need to draw
-        float nearStartDrawX = nearStartX - viewportWidth;
-        float nearEndDrawX = nearEndX + viewportWidth;
+        // Calculate visible range for trees - extremely large coverage for endless mode
+        float nearStartX = nearX - viewportWidth * 20.0f;
+        float nearEndX = nearX + viewportWidth * 20.0f;
         
-        // Draw multiple copies of the foreground layer
-        for (float x = nearStartDrawX; x < nearEndDrawX; x += nearWidth) {
-            batch.draw(foregroundNear, x, 0, nearWidth, foregroundNear.getHeight());
+        // Draw trees
+        for (float x = nearStartX; x < nearEndX; x += nearWidth) {
+            batch.draw(treesNear, x, 0, nearWidth, treesNear.getHeight());
         }
 
         batch.end();
@@ -144,6 +144,16 @@ public class GameScreen implements Screen {
             obstacle.draw(shape);
             if (player.rect.overlaps(obstacle.getRect())) {
                 resetGame();
+            }
+        }
+
+        // Draw and check goal
+        if (goal != null) {
+            goal.draw(shape);
+            if (player.rect.overlaps(goal.getRect())) {
+                goal.setReached(true);
+                // Show level complete screen
+                game.setScreen(new LevelCompleteScreen(game));
             }
         }
 
@@ -171,7 +181,7 @@ public class GameScreen implements Screen {
         shape.dispose();
         batch.dispose();
         backgroundFar.dispose();
-        treesMid.dispose();
-        foregroundNear.dispose();
+        mountainsMid.dispose();
+        treesNear.dispose();
     }
 }

@@ -14,7 +14,7 @@ public class EndlessGameScreen extends GameScreen {
     private SpriteBatch scoreBatch;
 
     public EndlessGameScreen(MainGame game, Array<Platform> initialPlatforms) {
-        super(game, initialPlatforms, new Array<>());
+        super(game, initialPlatforms, new Array<>(), null);
         font = new BitmapFont();
         scoreBatch = new SpriteBatch();
     }

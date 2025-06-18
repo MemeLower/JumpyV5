@@ -20,16 +20,48 @@ public class LeaderboardManager {
     }
 
     public void addScore(String username, float score) {
-        scores.add(new ScoreEntry(username, score));
-        scores.sort((a, b) -> Float.compare(b.getScore(), a.getScore())); // Sort descending
+        // Check if username already exists
+        ScoreEntry existingEntry = null;
+        for (ScoreEntry entry : scores) {
+            if (entry.getUsername().equals(username)) {
+                existingEntry = entry;
+                break;
+            }
+        }
+
+        if (existingEntry != null) {
+            // Update existing score if new score is higher
+            if (score > existingEntry.getScore()) {
+                existingEntry.setScore(score);
+            }
+        } else {
+            // Add new score entry
+            scores.add(new ScoreEntry(username, score));
+        }
+
+        // Sort scores
+        scores.sort((a, b) -> Float.compare(b.getScore(), a.getScore()));
+        
+        // Keep only top MAX_SCORES
         if (scores.size > MAX_SCORES) {
             scores.truncate(MAX_SCORES);
         }
+        
         saveScores();
     }
 
     public Array<ScoreEntry> getScores() {
         return scores;
+    }
+
+    public Array<String> getUniqueUsernames() {
+        Array<String> usernames = new Array<>();
+        for (ScoreEntry entry : scores) {
+            if (!usernames.contains(entry.getUsername(), false)) {
+                usernames.add(entry.getUsername());
+            }
+        }
+        return usernames;
     }
 
     private void saveScores() {

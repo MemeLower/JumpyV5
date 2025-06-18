@@ -23,17 +23,19 @@ public class GameScreen implements Screen {
     Goal goal;
     OrthographicCamera camera;
     Viewport viewport;
+    int levelNumber;
 
     // Parallax background textures
     private Texture backgroundFar;
     private Texture mountainsMid;
     private Texture treesNear;
 
-    public GameScreen(MainGame game, Array<Platform> platforms, Array<Obstacle> obstacles, Goal goal) {
+    public GameScreen(MainGame game, Array<Platform> platforms, Array<Obstacle> obstacles, Goal goal, int levelNumber) {
         this.game = game;
-        this.platforms = platforms;
-        this.obstacles = obstacles;
+        this.platforms = platforms != null ? platforms : new Array<>();
+        this.obstacles = obstacles != null ? obstacles : new Array<>();
         this.goal = goal;
+        this.levelNumber = levelNumber;
 
         shape = new ShapeRenderer();
         player = new Player(this); // Pass GameScreen to Player
@@ -152,8 +154,8 @@ public class GameScreen implements Screen {
             goal.draw(shape);
             if (player.rect.overlaps(goal.getRect())) {
                 goal.setReached(true);
-                // Show level complete screen
-                game.setScreen(new LevelCompleteScreen(game));
+                // Show level complete screen with level number
+                game.setScreen(new LevelCompleteScreen(game, levelNumber));
             }
         }
 

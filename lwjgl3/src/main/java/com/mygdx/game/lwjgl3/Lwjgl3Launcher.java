@@ -17,10 +17,11 @@ public class Lwjgl3Launcher {
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-        configuration.setTitle("raaaaaaaaa");
-        configuration.useVsync(true); // Enable vertical sync to match monitor refresh rate
-        configuration.setWindowedMode(800, 600); // Default window size
-        configuration.setResizable(true); // Allow resizing the window
+        configuration.setTitle("Jumpy");
+        configuration.useVsync(true);
+        configuration.setWindowedMode(1280, 720); // Larger default window size
+        configuration.setResizable(true);
+        configuration.setMaximized(true); // Start maximized
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
         return configuration;
     }

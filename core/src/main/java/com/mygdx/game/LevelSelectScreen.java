@@ -34,7 +34,7 @@ public class LevelSelectScreen implements Screen {
         this.skin = new Skin(Gdx.files.internal("uiskin.json"));
         this.levelManager = LevelManager.getInstance();
         this.table = new Table();
-        
+
         setupUI();
     }
 
@@ -58,13 +58,13 @@ public class LevelSelectScreen implements Screen {
             }
 
             levelButton.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
                     if (levelManager.isLevelUnlocked(level)) {
                         game.setScreen(createLevel(level));
                     }
-                }
-            });
+            }
+        });
 
             table.add(levelButton).width(200).height(50).padBottom(10).row();
         }
@@ -120,10 +120,10 @@ public class LevelSelectScreen implements Screen {
         platforms.add(new Platform(1600, 100, 300, 20));
 
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(200, 100, 30, 30));
-        obstacles.add(new Obstacle(500, 150, 30, 30));
-        obstacles.add(new Obstacle(800, 200, 30, 30));
-        obstacles.add(new Obstacle(1200, 200, 30, 30));
+        obstacles.add(new Obstacle(200, 120, 30, 30));
+        obstacles.add(new Obstacle(500, 170, 30, 30));
+        obstacles.add(new Obstacle(800, 220, 30, 30));
+        obstacles.add(new Obstacle(1200, 220, 30, 30));
 
         Goal goal = new Goal(1800, 100, 40, 60);
         return new GameScreen(game, platforms, obstacles, goal, 1);
@@ -141,12 +141,12 @@ public class LevelSelectScreen implements Screen {
         platforms.add(new Platform(1850, 150, 200, 20));
 
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(450, 150, 30, 30));
-        obstacles.add(new Obstacle(700, 200, 30, 30));
-        obstacles.add(new Obstacle(900, 150, 30, 30));
-        obstacles.add(new Obstacle(1150, 200, 30, 30));
-        obstacles.add(new Obstacle(1350, 150, 30, 30));
-        obstacles.add(new Obstacle(1600, 100, 30, 30));
+        obstacles.add(new Obstacle(450, 170, 30, 30));
+        obstacles.add(new Obstacle(700, 220, 30, 30));
+        obstacles.add(new Obstacle(900, 170, 30, 30));
+        obstacles.add(new Obstacle(1150, 220, 30, 30));
+        obstacles.add(new Obstacle(1350, 170, 30, 30));
+        obstacles.add(new Obstacle(1600, 120, 30, 30));
 
         Goal goal = new Goal(2000, 150, 40, 60);
         return new GameScreen(game, platforms, obstacles, goal, 2);
@@ -165,13 +165,13 @@ public class LevelSelectScreen implements Screen {
         platforms.add(new Platform(1750, 100, 200, 20));
 
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(400, 150, 30, 30));
-        obstacles.add(new Obstacle(600, 200, 30, 30));
-        obstacles.add(new Obstacle(800, 150, 30, 30));
-        obstacles.add(new Obstacle(1000, 200, 30, 30));
-        obstacles.add(new Obstacle(1200, 150, 30, 30));
-        obstacles.add(new Obstacle(1400, 200, 30, 30));
-        obstacles.add(new Obstacle(1600, 150, 30, 30));
+        obstacles.add(new Obstacle(400, 170, 30, 30));
+        obstacles.add(new Obstacle(600, 220, 30, 30));
+        obstacles.add(new Obstacle(800, 170, 30, 30));
+        obstacles.add(new Obstacle(1000, 220, 30, 30));
+        obstacles.add(new Obstacle(1200, 170, 30, 30));
+        obstacles.add(new Obstacle(1400, 220, 30, 30));
+        obstacles.add(new Obstacle(1600, 170, 30, 30));
 
         Goal goal = new Goal(1900, 100, 40, 60);
         return new GameScreen(game, platforms, obstacles, goal, 3);
@@ -191,14 +191,14 @@ public class LevelSelectScreen implements Screen {
         platforms.add(new Platform(1900, 150, 150, 20));
 
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(350, 150, 30, 30));
-        obstacles.add(new Obstacle(550, 200, 30, 30));
-        obstacles.add(new Obstacle(750, 150, 30, 30));
-        obstacles.add(new Obstacle(950, 200, 30, 30));
-        obstacles.add(new Obstacle(1150, 150, 30, 30));
-        obstacles.add(new Obstacle(1350, 200, 30, 30));
-        obstacles.add(new Obstacle(1550, 150, 30, 30));
-        obstacles.add(new Obstacle(1750, 200, 30, 30));
+        obstacles.add(new Obstacle(350, 170, 30, 30));
+        obstacles.add(new Obstacle(550, 220, 30, 30));
+        obstacles.add(new Obstacle(750, 170, 30, 30));
+        obstacles.add(new Obstacle(950, 220, 30, 30));
+        obstacles.add(new Obstacle(1150, 170, 30, 30));
+        obstacles.add(new Obstacle(1350, 220, 30, 30));
+        obstacles.add(new Obstacle(1550, 170, 30, 30));
+        obstacles.add(new Obstacle(1750, 220, 30, 30));
 
         Goal goal = new Goal(2050, 150, 40, 60);
         return new GameScreen(game, platforms, obstacles, goal, 4);
@@ -220,16 +220,16 @@ public class LevelSelectScreen implements Screen {
         platforms.add(new Platform(1970, 150, 120, 20));
 
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(320, 150, 30, 30));
-        obstacles.add(new Obstacle(490, 200, 30, 30));
-        obstacles.add(new Obstacle(660, 150, 30, 30));
-        obstacles.add(new Obstacle(830, 200, 30, 30));
-        obstacles.add(new Obstacle(1000, 150, 30, 30));
-        obstacles.add(new Obstacle(1170, 200, 30, 30));
-        obstacles.add(new Obstacle(1340, 150, 30, 30));
-        obstacles.add(new Obstacle(1510, 200, 30, 30));
-        obstacles.add(new Obstacle(1680, 150, 30, 30));
-        obstacles.add(new Obstacle(1850, 200, 30, 30));
+        obstacles.add(new Obstacle(320, 170, 30, 30));
+        obstacles.add(new Obstacle(490, 220, 30, 30));
+        obstacles.add(new Obstacle(660, 170, 30, 30));
+        obstacles.add(new Obstacle(830, 220, 30, 30));
+        obstacles.add(new Obstacle(1000, 170, 30, 30));
+        obstacles.add(new Obstacle(1170, 220, 30, 30));
+        obstacles.add(new Obstacle(1340, 170, 30, 30));
+        obstacles.add(new Obstacle(1510, 220, 30, 30));
+        obstacles.add(new Obstacle(1680, 170, 30, 30));
+        obstacles.add(new Obstacle(1850, 220, 30, 30));
 
         Goal goal = new Goal(2100, 150, 40, 60);
         return new GameScreen(game, platforms, obstacles, goal, 5);

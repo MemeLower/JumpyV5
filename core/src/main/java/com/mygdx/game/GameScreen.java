@@ -12,11 +12,14 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.math.Vector2;
 
 public class GameScreen implements Screen {
     final MainGame game;
     ShapeRenderer shape;
-    SpriteBatch batch; // For drawing textures
+    SpriteBatch batch;
     Player player;
     Array<Platform> platforms;
     Array<Obstacle> obstacles;
@@ -24,6 +27,7 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     Viewport viewport;
     int levelNumber;
+    World world;
 
     // Parallax background textures
     private Texture backgroundFar;
@@ -37,8 +41,12 @@ public class GameScreen implements Screen {
         this.goal = goal;
         this.levelNumber = levelNumber;
 
+        // Initialize Box2D
+        Box2D.init();
+        world = new World(new Vector2(0, -9.81f), true);
+
         shape = new ShapeRenderer();
-        player = new Player(this); // Pass GameScreen to Player
+        player = new Player(this);
 
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(800, 480, camera);
@@ -52,7 +60,12 @@ public class GameScreen implements Screen {
     }
 
     public void resetGame() {
-        resetPlayer();
+        if (levelNumber == -1) {
+            // For endless mode, show game over screen
+            game.setScreen(new GameOverScreen(game, 0));
+        } else {
+            resetPlayer();
+        }
     }
 
     @Override
@@ -61,23 +74,33 @@ public class GameScreen implements Screen {
 
         // Load background textures
         backgroundFar = new Texture("background_far.png");
-        mountainsMid = new Texture("trees_mid.png"); // This is actually mountains
-        treesNear = new Texture("foreground_near.png"); // This is actually trees
+        mountainsMid = new Texture("trees_mid.png");
+        treesNear = new Texture("foreground_near.png");
 
         resetPlayer();
 
         // Set up camera and viewport
         camera = new OrthographicCamera();
-        viewport = new ExtendViewport(800, 480, camera); // Adjust these values to match your desired resolution
+        viewport = new ExtendViewport(800, 480, camera);
 
         // Center the camera initially
-        camera.position.set(400, 300, 0); // Assuming 800x600 screen
+        camera.position.set(400, 300, 0);
         camera.update();
     }
 
     @Override
     public void render(float delta) {
+        // Check for menu escape
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+            game.setScreen(new MainMenuScreen(game));
+            return;
+        }
+
+        // Update physics
+        world.step(1/60f, 6, 2);
+
         player.update(delta, platforms);
+        // Only follow player horizontally, keep camera at fixed height
         camera.position.set(player.rect.x + player.rect.width / 2, 300, 0);
         camera.update();
 
@@ -88,53 +111,45 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // ---- PARALLAX BACKGROUND DRAWING ----
+        // Draw parallax background
         float camX = camera.position.x;
-
-        // Parallax factors
-        float farFactor = 1.0f;     // Far background moves at camera speed
-        float midFactor = 0.7f;     // Mountains move slower
-        float nearFactor = 0.3f;    // Trees move even slower
+        float farFactor = 1.0f;
+        float midFactor = 0.7f;
+        float nearFactor = 0.3f;
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        // Draw far background (single centered image)
+        // Draw far background
         float farX = camX * farFactor;
         batch.draw(backgroundFar,
             farX - backgroundFar.getWidth() / 2, 0,
             backgroundFar.getWidth(), backgroundFar.getHeight());
 
-        // Draw middle layer (mountains) with repeating pattern
+        // Draw middle layer
         float midX = camX * midFactor;
         float midWidth = mountainsMid.getWidth();
         float viewportWidth = viewport.getWorldWidth();
-        
-        // Calculate visible range for mountains - extremely large coverage for endless mode
         float midStartX = midX - viewportWidth * 20.0f;
         float midEndX = midX + viewportWidth * 20.0f;
         
-        // Draw mountains
         for (float x = midStartX; x < midEndX; x += midWidth) {
             batch.draw(mountainsMid, x, 0, midWidth, mountainsMid.getHeight());
         }
 
-        // Draw foreground layer (trees) with repeating pattern
+        // Draw foreground layer
         float nearX = camX * nearFactor;
         float nearWidth = treesNear.getWidth();
-        
-        // Calculate visible range for trees - extremely large coverage for endless mode
         float nearStartX = nearX - viewportWidth * 20.0f;
         float nearEndX = nearX + viewportWidth * 20.0f;
         
-        // Draw trees
         for (float x = nearStartX; x < nearEndX; x += nearWidth) {
             batch.draw(treesNear, x, 0, nearWidth, treesNear.getHeight());
         }
 
         batch.end();
-        // ---- END OF PARALLAX BACKGROUND ----
 
+        // Draw game objects
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -149,12 +164,10 @@ public class GameScreen implements Screen {
             }
         }
 
-        // Draw and check goal
         if (goal != null) {
             goal.draw(shape);
             if (player.rect.overlaps(goal.getRect())) {
                 goal.setReached(true);
-                // Show level complete screen with level number
                 game.setScreen(new LevelCompleteScreen(game, levelNumber));
             }
         }
@@ -165,7 +178,7 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        camera.position.set(player.rect.x + player.rect.width / 2, player.rect.y + player.rect.height / 2, 0);
+        camera.position.set(player.rect.x + player.rect.width / 2, 300, 0);
         camera.update();
     }
 
@@ -185,5 +198,6 @@ public class GameScreen implements Screen {
         backgroundFar.dispose();
         mountainsMid.dispose();
         treesNear.dispose();
+        world.dispose();
     }
 }

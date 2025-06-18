@@ -60,4 +60,20 @@ public class Player {
         shape.setColor(1, 0, 1, 1);
         shape.rect(rect.x, rect.y, rect.width, rect.height);
     }
+
+    public float getX() {
+        return rect.x;
+    }
+
+    public float getY() {
+        return rect.y;
+    }
+
+    public float getWidth() {
+        return rect.width;
+    }
+
+    public float getHeight() {
+        return rect.height;
+    }
 }

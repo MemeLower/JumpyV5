@@ -30,7 +30,7 @@ public class MainMenuScreen implements Screen {
         this.batch = new SpriteBatch();
         this.skin = new Skin(Gdx.files.internal("uiskin.json"));
         this.table = new Table();
-        
+
         setupUI();
     }
 

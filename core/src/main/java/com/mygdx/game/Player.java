@@ -24,32 +24,43 @@ public class Player {
         //sprite = new Sprite(new Texture(Gdx.files.internal("frame_0_delay-0.04s.png")));
     }
 
+    /**
+     * Aktualisiert die Spielerposition und Physik
+     * @param delta Zeit seit dem letzten Frame
+     * @param platforms Liste aller Plattformen für Kollisionserkennung
+     */
     public void update(float delta, Array<Platform> platforms) {
+        // Horizontale Bewegung: A/D oder Pfeiltasten
         if (Gdx.input.isKeyPressed(Input.Keys.A)) rect.x -= speed * delta;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) rect.x += speed * delta;
 
-        yVelocity -= gravity * delta;
-        rect.y += yVelocity * delta;
-        onGround = false;
+        // Vertikale Bewegung: Schwerkraft und Geschwindigkeit
+        yVelocity -= gravity * delta;  // Schwerkraft wirkt nach unten
+        rect.y += yVelocity * delta;   // Position wird aktualisiert
+        onGround = false;              // Standardmäßig in der Luft
 
+        // Kollisionserkennung mit Plattformen
         for (Platform platform : platforms) {
-            if (yVelocity <= 0 &&
-                rect.y > platform.getRect().y + platform.getRect().height - 5 &&
-                rect.y + yVelocity * delta <= platform.getRect().y + platform.getRect().height &&
-                rect.x + rect.width > platform.getRect().x &&
+            // Prüft ob Spieler auf Plattform landet
+            if (yVelocity <= 0 &&                                    // Fallend
+                rect.y > platform.getRect().y + platform.getRect().height - 5 &&  // Über Plattform
+                rect.y + yVelocity * delta <= platform.getRect().y + platform.getRect().height &&  // Wird landen
+                rect.x + rect.width > platform.getRect().x &&        // Horizontale Überlappung
                 rect.x < platform.getRect().x + platform.getRect().width) {
-                rect.y = platform.getRect().y + platform.getRect().height;
-                yVelocity = 0;
-                onGround = true;
+                rect.y = platform.getRect().y + platform.getRect().height;  // Position korrigieren
+                yVelocity = 0;                                       // Fall stoppen
+                onGround = true;                                     // Auf Boden markieren
                 break;
             }
         }
 
+        // Springen: Nur möglich wenn auf dem Boden
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
-            yVelocity = jumpVelocity;
-            onGround = false;
+            yVelocity = jumpVelocity;  // Aufwärtsgeschwindigkeit setzen
+            onGround = false;          // Nicht mehr auf dem Boden
         }
 
+        // Spieler ist gefallen - Level neu starten
         if (rect.y < -100) {
             System.out.println("Player fell off! Resetting...");
             gameScreen.resetGame();

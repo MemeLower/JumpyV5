@@ -24,13 +24,17 @@ public class Goal {
         this.reached = reached;
     }
 
+    /**
+     * Zeichnet das Ziel (Flagge) auf dem Bildschirm
+     * @param shape ShapeRenderer für das Zeichnen der Formen
+     */
     public void draw(ShapeRenderer shape) {
-        // Draw a golden flag-like shape
-        shape.setColor(1, 0.84f, 0, 1); // Gold color
-        shape.rect(rect.x, rect.y, rect.width, rect.height);
+        // Zeichne die Flagge in Gold
+        shape.setColor(1, 0.84f, 0, 1);  // Goldene Farbe (RGBA)
+        shape.rect(rect.x, rect.y, rect.width, rect.height);  // Rechteckige Flagge
         
-        // Draw the flag pole
-        shape.setColor(0.5f, 0.5f, 0.5f, 1); // Gray color
-        shape.rect(rect.x + rect.width/2 - 2, rect.y, 4, rect.height);
+        // Zeichne den Flaggenmast in Grau
+        shape.setColor(0.5f, 0.5f, 0.5f, 1);  // Graue Farbe
+        shape.rect(rect.x + rect.width/2 - 2, rect.y, 4, rect.height);  // Dünner Mast in der Mitte
     }
 } 

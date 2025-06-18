@@ -109,23 +109,34 @@ public class LevelSelectScreen implements Screen {
         }
     }
 
+    /**
+     * Erstellt das erste Level mit Plattformen, Hindernissen und Ziel
+     * @return GameScreen mit dem konfigurierten Level
+     */
     private GameScreen createLevel1() {
+        // Erstelle Array für Plattformen
         Array<Platform> platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 300, 20));
-        platforms.add(new Platform(450, 150, 200, 20));
-        platforms.add(new Platform(700, 200, 150, 20));
-        platforms.add(new Platform(900, 250, 200, 20));
-        platforms.add(new Platform(1150, 200, 150, 20));
-        platforms.add(new Platform(1350, 150, 200, 20));
-        platforms.add(new Platform(1600, 100, 300, 20));
+        // Plattformen mit steigender Höhe für guten Schwierigkeitsgrad
+        platforms.add(new Platform(100, 100, 300, 20));   // Startplattform
+        platforms.add(new Platform(450, 150, 200, 20));   // Erste Erhebung
+        platforms.add(new Platform(700, 200, 150, 20));   // Höchster Punkt
+        platforms.add(new Platform(900, 250, 200, 20));   // Abwärts
+        platforms.add(new Platform(1150, 200, 150, 20));  // Weiter abwärts
+        platforms.add(new Platform(1350, 150, 200, 20));  // Fast am Boden
+        platforms.add(new Platform(1600, 100, 300, 20));  // Finale Plattform
 
+        // Erstelle Array für Hindernisse
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(200, 120, 30, 30));
-        obstacles.add(new Obstacle(500, 170, 30, 30));
-        obstacles.add(new Obstacle(800, 220, 30, 30));
-        obstacles.add(new Obstacle(1200, 220, 30, 30));
+        // Hindernisse strategisch platzieren
+        obstacles.add(new Obstacle(200, 120, 30, 30));    // Erstes Hindernis
+        obstacles.add(new Obstacle(500, 170, 30, 30));    // Zweites Hindernis
+        obstacles.add(new Obstacle(800, 220, 30, 30));    // Drittes Hindernis
+        obstacles.add(new Obstacle(1200, 220, 30, 30));   // Viertes Hindernis
 
+        // Erstelle das Ziel am Ende des Levels
         Goal goal = new Goal(1800, 100, 40, 60);
+        
+        // Erstelle und gebe den GameScreen zurück
         return new GameScreen(game, platforms, obstacles, goal, 1);
     }
 

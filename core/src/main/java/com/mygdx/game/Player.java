@@ -30,7 +30,7 @@ public class Player {
 
     public Player(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
-        rect = new Rectangle(150, 200, 120, 200);
+        rect = new Rectangle(150, 200, 200, 120);
 
         // Load sprite sheets
         idleSheet = new Texture(Gdx.files.internal("IDLE.png"));
@@ -38,19 +38,13 @@ public class Player {
         hurtSheet = new Texture(Gdx.files.internal("HURT.png"));
 
         // Split into frames (assuming horizontal strip)
-        TextureRegion[] idleFrames = new TextureRegion[10];
-        TextureRegion[] runFrames = new TextureRegion[16];
-        TextureRegion[] hurtFrames = new TextureRegion[4];
-        int idleFrameWidth = idleSheet.getWidth() / 10;
-        int runFrameWidth = runSheet.getWidth() / 16;
-        int hurtFrameWidth = hurtSheet.getWidth() / 4;
-        for (int i = 0; i < 10; i++) idleFrames[i] = new TextureRegion(idleSheet, i * idleFrameWidth, 0, idleFrameWidth, idleSheet.getHeight());
-        for (int i = 0; i < 16; i++) runFrames[i] = new TextureRegion(runSheet, i * runFrameWidth, 0, runFrameWidth, runSheet.getHeight());
-        for (int i = 0; i < 4; i++) hurtFrames[i] = new TextureRegion(hurtSheet, i * hurtFrameWidth, 0, hurtFrameWidth, hurtSheet.getHeight());
+        TextureRegion[] idleFrames = TextureRegion.split(idleSheet, idleSheet.getWidth() / 10, idleSheet.getHeight())[0];
+        TextureRegion[] runFrames = TextureRegion.split(runSheet, runSheet.getWidth() / 16, runSheet.getHeight())[0];
+        TextureRegion[] hurtFrames = TextureRegion.split(hurtSheet, hurtSheet.getWidth() / 4, hurtSheet.getHeight())[0];
 
-        idleAnim = new Animation<>(0.1f, idleFrames);
-        runAnim = new Animation<>(0.07f, runFrames);
-        hurtAnim = new Animation<>(0.12f, hurtFrames);
+        idleAnim = new Animation<>(0.12f, idleFrames);
+        runAnim = new Animation<>(0.08f, runFrames);
+        hurtAnim = new Animation<>(0.15f, hurtFrames);
     }
 
     /**
@@ -98,7 +92,7 @@ public class Player {
 
         // Set state based on movement
         if (!onGround && yVelocity < 0) {
-            state = State.HURT; // Example: use HURT for falling, or add a JUMP state
+            state = State.HURT; // Use HURT for falling (or customize as needed)
         } else if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             state = State.RUN;
         } else {

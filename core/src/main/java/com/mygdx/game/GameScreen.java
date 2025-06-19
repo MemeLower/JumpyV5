@@ -152,7 +152,7 @@ public class GameScreen implements Screen {
 
         batch.end();
 
-        // Draw game objects (platforms, obstacles, goal) with ShapeRenderer
+        // Draw game objects
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeRenderer.ShapeType.Filled);
 

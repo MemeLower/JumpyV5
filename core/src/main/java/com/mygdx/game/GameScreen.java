@@ -147,13 +147,15 @@ public class GameScreen implements Screen {
             batch.draw(treesNear, x, 0, nearWidth, treesNear.getHeight());
         }
 
+        // Draw the player (animated)
+        player.draw(batch);
+
         batch.end();
 
-        // Draw game objects
+        // Draw game objects (platforms, obstacles, goal) with ShapeRenderer
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeRenderer.ShapeType.Filled);
 
-        player.draw(shape);
         for (Platform platform : platforms) {
             platform.draw(shape);
         }

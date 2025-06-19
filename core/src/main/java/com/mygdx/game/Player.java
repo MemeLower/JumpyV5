@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Player {
     Sprite sprite;
@@ -18,10 +21,36 @@ public class Player {
     boolean onGround = false;
     GameScreen gameScreen;
 
+    enum State { IDLE, RUN, HURT }
+    private State state = State.IDLE;
+
+    private Texture idleSheet, runSheet, hurtSheet;
+    private Animation<TextureRegion> idleAnim, runAnim, hurtAnim;
+    private float animTime = 0f;
+
     public Player(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
-        rect = new Rectangle(150, 200, 30, 50);
-        //sprite = new Sprite(new Texture(Gdx.files.internal("frame_0_delay-0.04s.png")));
+        rect = new Rectangle(150, 200, 120, 200);
+
+        // Load sprite sheets
+        idleSheet = new Texture(Gdx.files.internal("IDLE.png"));
+        runSheet = new Texture(Gdx.files.internal("RUN.png"));
+        hurtSheet = new Texture(Gdx.files.internal("HURT.png"));
+
+        // Split into frames (assuming horizontal strip)
+        TextureRegion[] idleFrames = new TextureRegion[10];
+        TextureRegion[] runFrames = new TextureRegion[16];
+        TextureRegion[] hurtFrames = new TextureRegion[4];
+        int idleFrameWidth = idleSheet.getWidth() / 10;
+        int runFrameWidth = runSheet.getWidth() / 16;
+        int hurtFrameWidth = hurtSheet.getWidth() / 4;
+        for (int i = 0; i < 10; i++) idleFrames[i] = new TextureRegion(idleSheet, i * idleFrameWidth, 0, idleFrameWidth, idleSheet.getHeight());
+        for (int i = 0; i < 16; i++) runFrames[i] = new TextureRegion(runSheet, i * runFrameWidth, 0, runFrameWidth, runSheet.getHeight());
+        for (int i = 0; i < 4; i++) hurtFrames[i] = new TextureRegion(hurtSheet, i * hurtFrameWidth, 0, hurtFrameWidth, hurtSheet.getHeight());
+
+        idleAnim = new Animation<>(0.1f, idleFrames);
+        runAnim = new Animation<>(0.07f, runFrames);
+        hurtAnim = new Animation<>(0.12f, hurtFrames);
     }
 
     /**
@@ -30,6 +59,7 @@ public class Player {
      * @param platforms Liste aller Plattformen für Kollisionserkennung
      */
     public void update(float delta, Array<Platform> platforms) {
+        animTime += delta;
         // Horizontale Bewegung: A/D oder Pfeiltasten
         if (Gdx.input.isKeyPressed(Input.Keys.A)) rect.x -= speed * delta;
         if (Gdx.input.isKeyPressed(Input.Keys.D)) rect.x += speed * delta;
@@ -65,11 +95,26 @@ public class Player {
             System.out.println("Player fell off! Resetting...");
             gameScreen.resetGame();
         }
+
+        // Set state based on movement
+        if (!onGround && yVelocity < 0) {
+            state = State.HURT; // Example: use HURT for falling, or add a JUMP state
+        } else if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+            state = State.RUN;
+        } else {
+            state = State.IDLE;
+        }
     }
 
-    public void draw(ShapeRenderer shape) {
-        shape.setColor(1, 0, 1, 1);
-        shape.rect(rect.x, rect.y, rect.width, rect.height);
+    public void draw(SpriteBatch batch) {
+        TextureRegion currentFrame;
+        switch (state) {
+            case RUN: currentFrame = runAnim.getKeyFrame(animTime, true); break;
+            case HURT: currentFrame = hurtAnim.getKeyFrame(animTime, true); break;
+            case IDLE:
+            default: currentFrame = idleAnim.getKeyFrame(animTime, true); break;
+        }
+        batch.draw(currentFrame, rect.x, rect.y, rect.width, rect.height);
     }
 
     public float getX() {
@@ -86,5 +131,11 @@ public class Player {
 
     public float getHeight() {
         return rect.height;
+    }
+
+    public void dispose() {
+        idleSheet.dispose();
+        runSheet.dispose();
+        hurtSheet.dispose();
     }
 }

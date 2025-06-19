@@ -22,15 +22,15 @@ public class EndlessGameScreen extends GameScreen {
     private static final float WORLD_HEIGHT = 720;
     private static final float MIN_PLATFORM_SPACING = 200;
     private static final float MAX_PLATFORM_SPACING = 300;
-    private static final float MIN_PLATFORM_HEIGHT = 200;
-    private static final float MAX_PLATFORM_HEIGHT = 500;
+    private static final float MIN_PLATFORM_HEIGHT = 150;
+    private static final float MAX_PLATFORM_HEIGHT = 400;
     private static final float MIN_PLATFORM_WIDTH = 120;
     private static final float MAX_PLATFORM_WIDTH = 200;
     private static final float PLATFORM_HEIGHT = 20;
     private static final float OBSTACLE_SIZE = 30;
     private static final float SPAWN_DISTANCE = 800;
     private static final float CLEANUP_DISTANCE = -1000;
-    private static final float MAX_HEIGHT_DIFF = 100;
+    private static final float MAX_HEIGHT_DIFF = 60;
     private static final float OBSTACLE_CHANCE = 0.3f;
     private static final float SCORE_INTERVAL = 0.1f;
     private static final float MIN_HEIGHT_DIFF = 10f;
@@ -104,12 +104,8 @@ public class EndlessGameScreen extends GameScreen {
         float heightDiff = MathUtils.random(-MAX_HEIGHT_DIFF, MAX_HEIGHT_DIFF);
         float newY = lastY + heightDiff;
         
-        // Ensure the platform stays within the visible area plus buffer
-        float minVisibleY = camera.position.y - camera.viewportHeight/2 - VISIBLE_BUFFER;
-        float maxVisibleY = camera.position.y + camera.viewportHeight/2 + VISIBLE_BUFFER;
-        newY = MathUtils.clamp(newY, 
-            Math.max(MIN_PLATFORM_HEIGHT, minVisibleY), 
-            Math.min(MAX_PLATFORM_HEIGHT, maxVisibleY));
+        // Clamp the newY to a tighter range to keep platforms in view
+        newY = MathUtils.clamp(newY, MIN_PLATFORM_HEIGHT, MAX_PLATFORM_HEIGHT);
         
         // Random platform width
         float platformWidth = MathUtils.random(MIN_PLATFORM_WIDTH, MAX_PLATFORM_WIDTH);

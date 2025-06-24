@@ -152,6 +152,12 @@ public class GameScreen implements Screen {
 
         batch.end();
 
+        // Draw visual hitbox for testing
+        shape.setProjectionMatrix(camera.combined);
+        shape.begin(ShapeRenderer.ShapeType.Line);
+        player.drawHitbox(shape);
+        shape.end();
+
         // Draw game objects
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeRenderer.ShapeType.Filled);
@@ -201,5 +207,12 @@ public class GameScreen implements Screen {
         mountainsMid.dispose();
         treesNear.dispose();
         world.dispose();
+    }
+
+    /**
+     * Getter for the ShapeRenderer to allow other classes to draw shapes
+     */
+    public ShapeRenderer getShapeRenderer() {
+        return shape;
     }
 }

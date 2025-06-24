@@ -14,30 +14,157 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Player {
     Sprite sprite;
     Rectangle rect;
-    float speed = 500;
-    float jumpVelocity = 750; // 750
+    float walkSpeed = 250; // Slower walking speed
+    float runSpeed = 500;  // Current speed for running
+    float jumpVelocity = 600; // Lower jump height
     float yVelocity = 0;
     float gravity = 1500;
     boolean onGround = false;
+    boolean facingRight = true;
     GameScreen gameScreen;
+    
+    // Character scaling
+    private static final float CHARACTER_SCALE = 2.0f; // Reduced from 3.0f to 2.0f
+    private static final int SPRITE_WIDTH = 48; // Original sprite width
+    private static final int SPRITE_HEIGHT = 48; // Original sprite height
+    
+    // Hitbox adjustments - make collision box smaller and align bottom
+    private static final float HITBOX_WIDTH_RATIO = 0.35f; // Much narrower
+    private static final float HITBOX_HEIGHT_RATIO = 0.6f; // Much shorter
 
-    enum State { IDLE, RUN, HURT }
+    enum State { 
+        IDLE, 
+        WALK, 
+        RUN, 
+        JUMP, 
+        FALL, 
+        LAND,
+        HURT,
+        DEATH
+    }
     private State state = State.IDLE;
+    private State previousState = State.IDLE;
 
-    private Texture idleSheet, runSheet, hurtSheet;
-    private Animation<TextureRegion> idleAnim, runAnim, hurtAnim;
+    // Animation textures
+    private Texture idleSheet, walkSheet, runSheet, jumpSheet, fallSheet, landSheet, hurtSheet, deathSheet;
+    
+    // Animations
+    private Animation<TextureRegion> idleAnim, walkAnim, runAnim, jumpAnim, fallAnim, landAnim, hurtAnim, deathAnim;
     private float animTime = 0f;
+    
+    // Animation frame counts (adjust based on your actual spritesheets)
+    private static final int IDLE_FRAMES = 8;
+    private static final int WALK_FRAMES = 8;
+    private static final int RUN_FRAMES = 8;
+    private static final int JUMP_FRAMES = 4;
+    private static final int FALL_FRAMES = 2;
+    private static final int LAND_FRAMES = 4;
+    private static final int HURT_FRAMES = 4;
+    private static final int DEATH_FRAMES = 8;
+    
+    // Animation frame duration (in seconds)
+    private static final float IDLE_DURATION = 0.12f;
+    private static final float WALK_DURATION = 0.1f;
+    private static final float RUN_DURATION = 0.08f;
+    private static final float JUMP_DURATION = 0.15f;
+    private static final float FALL_DURATION = 0.2f;
+    private static final float LAND_DURATION = 0.1f;
+    private static final float HURT_DURATION = 0.15f;
+    private static final float DEATH_DURATION = 0.2f;
+
+    private static final int FEET_OFFSET_PIXELS = 8; // Fine-tuned for perfect feet alignment
 
     public Player(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
-        rect = new Rectangle(150, 200, 200, 120);
+        
+        // Calculate visual and collision dimensions
+        float visualWidth = SPRITE_WIDTH * CHARACTER_SCALE;
+        float visualHeight = SPRITE_HEIGHT * CHARACTER_SCALE;
+        float hitboxWidth = visualWidth * HITBOX_WIDTH_RATIO;
+        float hitboxHeight = visualHeight * HITBOX_HEIGHT_RATIO;
+        
+        // Align hitbox bottom with visual sprite bottom
+        float hitboxX = 150 + (visualWidth - hitboxWidth) / 2;
+        float hitboxY = 200; // Y is at the bottom of the sprite
+        
+        // Set rectangle size based on hitbox dimensions
+        rect = new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
 
-        // Load sprite sheets
+        loadAnimations();
+    }
+    
+    private void loadAnimations() {
+        try {
+            // Load sprite sheets
+            idleSheet = new Texture(Gdx.files.internal("character animations/Idle/Player Idle 48x48.png"));
+            walkSheet = new Texture(Gdx.files.internal("character animations/Walk/PlayerWalk 48x48.png"));
+            runSheet = new Texture(Gdx.files.internal("character animations/Run/player run 48x48.png"));
+            jumpSheet = new Texture(Gdx.files.internal("character animations/Jump/player jump 48x48.png"));
+            landSheet = new Texture(Gdx.files.internal("character animations/Land/player land 48x48.png"));
+            hurtSheet = new Texture(Gdx.files.internal("character animations/Hurt-Damaged/Player Hurt 48x48.png"));
+            deathSheet = new Texture(Gdx.files.internal("character animations/Death/Player Death 64x64.png"));
+            
+            // Use fall animation from jump sheet for now, or create a separate fall animation
+            fallSheet = jumpSheet; // Temporary - you might want to create a dedicated fall animation
+            
+            // Split into frames with automatic frame count detection
+            TextureRegion[] idleFrames = splitSpritesheet(idleSheet, 48, 48);
+            TextureRegion[] walkFrames = splitSpritesheet(walkSheet, 48, 48);
+            TextureRegion[] runFrames = splitSpritesheet(runSheet, 48, 48);
+            TextureRegion[] jumpFrames = splitSpritesheet(jumpSheet, 48, 48);
+            TextureRegion[] fallFrames = splitSpritesheet(fallSheet, 48, 48);
+            TextureRegion[] landFrames = splitSpritesheet(landSheet, 48, 48);
+            TextureRegion[] hurtFrames = splitSpritesheet(hurtSheet, 48, 48);
+            TextureRegion[] deathFrames = splitSpritesheet(deathSheet, 64, 64); // Death uses 64x64
+
+            // Create animations
+            idleAnim = new Animation<>(IDLE_DURATION, idleFrames);
+            walkAnim = new Animation<>(WALK_DURATION, walkFrames);
+            runAnim = new Animation<>(RUN_DURATION, runFrames);
+            jumpAnim = new Animation<>(JUMP_DURATION, jumpFrames);
+            fallAnim = new Animation<>(FALL_DURATION, fallFrames);
+            landAnim = new Animation<>(LAND_DURATION, landFrames);
+            hurtAnim = new Animation<>(HURT_DURATION, hurtFrames);
+            deathAnim = new Animation<>(DEATH_DURATION, deathFrames);
+            
+        } catch (Exception e) {
+            System.err.println("Error loading animations: " + e.getMessage());
+            // Fallback to old animations if new ones fail to load
+            loadFallbackAnimations();
+        }
+    }
+    
+    /**
+     * Automatically splits a spritesheet into frames based on frame dimensions
+     * @param sheet The spritesheet texture
+     * @param frameWidth Width of each frame
+     * @param frameHeight Height of each frame
+     * @return Array of TextureRegions representing each frame
+     */
+    private TextureRegion[] splitSpritesheet(Texture sheet, int frameWidth, int frameHeight) {
+        int framesPerRow = sheet.getWidth() / frameWidth;
+        int framesPerCol = sheet.getHeight() / frameHeight;
+        int totalFrames = framesPerRow * framesPerCol;
+        
+        TextureRegion[][] temp = TextureRegion.split(sheet, frameWidth, frameHeight);
+        TextureRegion[] frames = new TextureRegion[totalFrames];
+        
+        int index = 0;
+        for (int row = 0; row < framesPerCol; row++) {
+            for (int col = 0; col < framesPerRow; col++) {
+                frames[index++] = temp[row][col];
+            }
+        }
+        
+        return frames;
+    }
+    
+    private void loadFallbackAnimations() {
+        // Fallback to original animations
         idleSheet = new Texture(Gdx.files.internal("IDLE.png"));
         runSheet = new Texture(Gdx.files.internal("RUN.png"));
         hurtSheet = new Texture(Gdx.files.internal("HURT.png"));
-
-        // Split into frames (assuming horizontal strip)
+        
         TextureRegion[] idleFrames = TextureRegion.split(idleSheet, idleSheet.getWidth() / 10, idleSheet.getHeight())[0];
         TextureRegion[] runFrames = TextureRegion.split(runSheet, runSheet.getWidth() / 16, runSheet.getHeight())[0];
         TextureRegion[] hurtFrames = TextureRegion.split(hurtSheet, hurtSheet.getWidth() / 4, hurtSheet.getHeight())[0];
@@ -45,70 +172,147 @@ public class Player {
         idleAnim = new Animation<>(0.12f, idleFrames);
         runAnim = new Animation<>(0.08f, runFrames);
         hurtAnim = new Animation<>(0.15f, hurtFrames);
+        
+        // Set other animations to idle as fallback
+        walkAnim = idleAnim;
+        jumpAnim = idleAnim;
+        fallAnim = idleAnim;
+        landAnim = idleAnim;
+        deathAnim = idleAnim;
     }
 
-    /**
-     * Aktualisiert die Spielerposition und Physik
-     * @param delta Zeit seit dem letzten Frame
-     * @param platforms Liste aller Plattformen für Kollisionserkennung
-     */
     public void update(float delta, Array<Platform> platforms) {
         animTime += delta;
-        // Horizontale Bewegung: A/D oder Pfeiltasten
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) rect.x -= speed * delta;
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) rect.x += speed * delta;
-
-        // Vertikale Bewegung: Schwerkraft und Geschwindigkeit
-        yVelocity -= gravity * delta;  // Schwerkraft wirkt nach unten
-        rect.y += yVelocity * delta;   // Position wird aktualisiert
-        onGround = false;              // Standardmäßig in der Luft
-
-        // Kollisionserkennung mit Plattformen
+        
+        previousState = state;
+        
+        boolean movingLeft = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        boolean movingRight = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        boolean running = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
+        
+        if (movingLeft) facingRight = false;
+        if (movingRight) facingRight = true;
+        
+        float visualWidth = SPRITE_WIDTH * CHARACTER_SCALE;
+        float visualHeight = SPRITE_HEIGHT * CHARACTER_SCALE;
+        float hitboxWidth = visualWidth * HITBOX_WIDTH_RATIO;
+        float hitboxHeight = visualHeight * HITBOX_HEIGHT_RATIO;
+        float visualX = rect.x - (visualWidth - hitboxWidth) / 2;
+        float visualY = rect.y;
+        
+        // Use walkSpeed or runSpeed
+        float moveSpeed = running ? runSpeed : walkSpeed;
+        if (movingLeft) visualX -= moveSpeed * delta;
+        if (movingRight) visualX += moveSpeed * delta;
+        rect.x = visualX + (visualWidth - hitboxWidth) / 2;
+        
+        yVelocity -= gravity * delta;
+        rect.y += yVelocity * delta;
+        onGround = false;
+        
         for (Platform platform : platforms) {
-            // Prüft ob Spieler auf Plattform landet
-            if (yVelocity <= 0 &&                                    // Fallend
-                rect.y > platform.getRect().y + platform.getRect().height - 5 &&  // Über Plattform
-                rect.y + yVelocity * delta <= platform.getRect().y + platform.getRect().height &&  // Wird landen
-                rect.x + rect.width > platform.getRect().x &&        // Horizontale Überlappung
-                rect.x < platform.getRect().x + platform.getRect().width) {
-                rect.y = platform.getRect().y + platform.getRect().height;  // Position korrigieren
-                yVelocity = 0;                                       // Fall stoppen
-                onGround = true;                                     // Auf Boden markieren
+            if (yVelocity <= 0 && 
+                rect.y > platform.getRect().y + platform.getRect().height - 15 &&
+                rect.y + yVelocity * delta <= platform.getRect().y + platform.getRect().height &&
+                rect.x + rect.width > platform.getRect().x + 5 &&
+                rect.x < platform.getRect().x + platform.getRect().width - 5) {
+                rect.y = platform.getRect().y + platform.getRect().height;
+                yVelocity = 0;
+                onGround = true;
                 break;
             }
         }
-
-        // Springen: Nur möglich wenn auf dem Boden
+        
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
-            yVelocity = jumpVelocity;  // Aufwärtsgeschwindigkeit setzen
-            onGround = false;          // Nicht mehr auf dem Boden
+            yVelocity = jumpVelocity;
+            onGround = false;
         }
-
-        // Spieler ist gefallen - Level neu starten
+        
         if (rect.y < -100) {
             System.out.println("Player fell off! Resetting...");
             gameScreen.resetGame();
         }
-
-        // Set state based on movement
-        if (!onGround && yVelocity < 0) {
-            state = State.HURT; // Use HURT for falling (or customize as needed)
-        } else if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D)) {
-            state = State.RUN;
+        
+        // State management
+        updateState(movingLeft, movingRight, running);
+    }
+    
+    private void updateState(boolean movingLeft, boolean movingRight, boolean running) {
+        if (!onGround) {
+            if (yVelocity > 0) {
+                state = State.JUMP;
+            } else {
+                state = State.FALL;
+            }
         } else {
-            state = State.IDLE;
+            if (movingLeft || movingRight) {
+                if (running) {
+                    state = State.RUN;
+                } else {
+                    state = State.WALK;
+                }
+            } else {
+                state = State.IDLE;
+            }
+        }
+        if (state != previousState) {
+            animTime = 0f;
         }
     }
 
     public void draw(SpriteBatch batch) {
-        TextureRegion currentFrame;
-        switch (state) {
-            case RUN: currentFrame = runAnim.getKeyFrame(animTime, true); break;
-            case HURT: currentFrame = hurtAnim.getKeyFrame(animTime, true); break;
-            case IDLE:
-            default: currentFrame = idleAnim.getKeyFrame(animTime, true); break;
+        TextureRegion currentFrame = getCurrentAnimationFrame();
+        
+        // Calculate visual and collision dimensions
+        float visualWidth = SPRITE_WIDTH * CHARACTER_SCALE;
+        float visualHeight = SPRITE_HEIGHT * CHARACTER_SCALE;
+        float hitboxWidth = visualWidth * HITBOX_WIDTH_RATIO;
+        float hitboxHeight = visualHeight * HITBOX_HEIGHT_RATIO;
+        
+        // Align visual sprite so its feet match the hitbox bottom
+        float visualX = rect.x - (visualWidth - hitboxWidth) / 2;
+        float visualY = rect.y - FEET_OFFSET_PIXELS * CHARACTER_SCALE;
+        
+        // Draw the frame with scaling at visual position
+        if (facingRight) {
+            batch.draw(currentFrame, visualX, visualY, visualWidth, visualHeight);
+        } else {
+            batch.draw(currentFrame, visualX + visualWidth, visualY, -visualWidth, visualHeight);
         }
-        batch.draw(currentFrame, rect.x, rect.y, rect.width, rect.height);
+        drawHitbox(batch);
+    }
+    
+    /**
+     * Draws the collision hitbox for testing purposes
+     */
+    private void drawHitbox(SpriteBatch batch) {
+        // Note: This method will be called from within the SpriteBatch rendering
+        // The actual hitbox drawing should be done separately in the GameScreen render method
+        // For now, we'll just store the hitbox info for the GameScreen to draw
+    }
+    
+    /**
+     * Draws the visual hitbox - should be called from GameScreen after SpriteBatch.end()
+     */
+    public void drawHitbox(ShapeRenderer shapeRenderer) {
+        if (shapeRenderer != null) {
+            shapeRenderer.setColor(1, 0, 0, 1); // Red color
+            shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+        }
+    }
+    
+    private TextureRegion getCurrentAnimationFrame() {
+        switch (state) {
+            case IDLE: return idleAnim.getKeyFrame(animTime, true);
+            case WALK: return walkAnim.getKeyFrame(animTime, true);
+            case RUN: return runAnim.getKeyFrame(animTime, true);
+            case JUMP: return jumpAnim.getKeyFrame(animTime, false); // Don't loop jump
+            case FALL: return fallAnim.getKeyFrame(animTime, true);
+            case LAND: return landAnim.getKeyFrame(animTime, false); // Don't loop land
+            case HURT: return hurtAnim.getKeyFrame(animTime, true);
+            case DEATH: return deathAnim.getKeyFrame(animTime, false); // Don't loop death
+            default: return idleAnim.getKeyFrame(animTime, true);
+        }
     }
 
     public float getX() {
@@ -126,10 +330,23 @@ public class Player {
     public float getHeight() {
         return rect.height;
     }
+    
+    public boolean isFacingRight() {
+        return facingRight;
+    }
+    
+    public State getState() {
+        return state;
+    }
 
     public void dispose() {
-        idleSheet.dispose();
-        runSheet.dispose();
-        hurtSheet.dispose();
+        if (idleSheet != null) idleSheet.dispose();
+        if (walkSheet != null) walkSheet.dispose();
+        if (runSheet != null) runSheet.dispose();
+        if (jumpSheet != null) jumpSheet.dispose();
+        if (fallSheet != null && fallSheet != jumpSheet) fallSheet.dispose();
+        if (landSheet != null) landSheet.dispose();
+        if (hurtSheet != null) hurtSheet.dispose();
+        if (deathSheet != null) deathSheet.dispose();
     }
 }

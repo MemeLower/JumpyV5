@@ -41,12 +41,18 @@ public class LeaderboardScreen implements Screen {
         
         // Title
         Label titleLabel = new Label("High Scores", skin);
+        titleLabel.setFontScale(2.0f);
+        titleLabel.setColor(1, 1, 1, 1);
         table.add(titleLabel).colspan(2).padBottom(30);
         table.row();
         
         // Headers
         Label nameLabel = new Label("Player", skin);
+        nameLabel.setFontScale(2.0f);
+        nameLabel.setColor(1, 1, 1, 1);
         Label scoreLabel = new Label("Score", skin);
+        scoreLabel.setFontScale(2.0f);
+        scoreLabel.setColor(1, 1, 1, 1);
         table.add(nameLabel).padRight(50);
         table.add(scoreLabel);
         table.row();
@@ -55,7 +61,11 @@ public class LeaderboardScreen implements Screen {
         Array<ScoreEntry> scores = leaderboardManager.getScores();
         for (ScoreEntry score : scores) {
             Label playerLabel = new Label(score.getUsername(), skin);
+            playerLabel.setFontScale(2.0f);
+            playerLabel.setColor(1, 1, 1, 1);
             Label scoreValueLabel = new Label(String.format("%.0f", score.getScore()), skin);
+            scoreValueLabel.setFontScale(2.0f);
+            scoreValueLabel.setColor(1, 1, 1, 1);
             table.add(playerLabel).padRight(50);
             table.add(scoreValueLabel);
             table.row();
@@ -63,6 +73,8 @@ public class LeaderboardScreen implements Screen {
         
         // Back button
         Label backLabel = new Label("Press ESC to go back", skin);
+        backLabel.setFontScale(2.0f);
+        backLabel.setColor(1, 1, 1, 1);
         table.add(backLabel).colspan(2).padTop(50);
         
         stage.addActor(table);

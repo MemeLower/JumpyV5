@@ -101,7 +101,7 @@ public class Player {
     
     private void loadAnimations() {
         try {
-            // Load sprite sheets
+            // LADE SPRITE-SHEETS: Alle Animation-Bilder für verschiedene Spielerzustände laden
             idleSheet = new Texture(Gdx.files.internal("character animations/Idle/Player Idle 48x48.png"));
             walkSheet = new Texture(Gdx.files.internal("character animations/Walk/PlayerWalk 48x48.png"));
             runSheet = new Texture(Gdx.files.internal("character animations/Run/player run 48x48.png"));
@@ -110,10 +110,10 @@ public class Player {
             hurtSheet = new Texture(Gdx.files.internal("character animations/Hurt-Damaged/Player Hurt 48x48.png"));
             deathSheet = new Texture(Gdx.files.internal("character animations/Death/Player Death 48x48.png"));
             
-            // Use fall animation from jump sheet for now, or create a separate fall animation
+            // FALL-ANIMATION: Verwende Jump-Sheet als Fallback für Fall-Animation
             fallSheet = jumpSheet; // Temporary - you might want to create a dedicated fall animation
             
-            // Split into frames with automatic frame count detection
+            // SPRITE-SHEETS AUFTEILEN: Automatische Aufteilung in Einzelbilder für Animationen
             TextureRegion[] idleFrames = splitSpritesheet(idleSheet, 48, 48);
             TextureRegion[] walkFrames = splitSpritesheet(walkSheet, 48, 48);
             TextureRegion[] runFrames = splitSpritesheet(runSheet, 48, 48);
@@ -124,7 +124,7 @@ public class Player {
             TextureRegion[] deathFrames = splitSpritesheet(deathSheet, 48, 48); // Death uses 48x48
             System.out.println("Death animation frames loaded: " + deathFrames.length);
 
-            // Create animations
+            // ANIMATIONEN ERSTELLEN: LibGDX Animation-Objekte mit Zeitdauer für jeden Zustand
             idleAnim = new Animation<>(IDLE_DURATION, idleFrames);
             walkAnim = new Animation<>(WALK_DURATION, walkFrames);
             runAnim = new Animation<>(RUN_DURATION, runFrames);
@@ -136,26 +136,29 @@ public class Player {
             
         } catch (Exception e) {
             System.err.println("Error loading animations: " + e.getMessage());
-            // Fallback to old animations if new ones fail to load
+            // FALLBACK: Verwende alte Animationen falls neue fehlschlagen
             loadFallbackAnimations();
         }
     }
     
     /**
-     * Automatically splits a spritesheet into frames based on frame dimensions
-     * @param sheet The spritesheet texture
-     * @param frameWidth Width of each frame
-     * @param frameHeight Height of each frame
-     * @return Array of TextureRegions representing each frame
+     * SPRITE-SHEET AUFTEILER: Automatisch ein Sprite-Sheet in Einzelbilder aufteilen
+     * @param sheet Das Sprite-Sheet Texture
+     * @param frameWidth Breite jedes Einzelbildes
+     * @param frameHeight Höhe jedes Einzelbildes
+     * @return Array von TextureRegions für jedes Einzelbild
      */
     private TextureRegion[] splitSpritesheet(Texture sheet, int frameWidth, int frameHeight) {
+        // BERECHNE ANZAHL: Wie viele Bilder pro Zeile und Spalte
         int framesPerRow = sheet.getWidth() / frameWidth;
         int framesPerCol = sheet.getHeight() / frameHeight;
         int totalFrames = framesPerRow * framesPerCol;
         
+        // AUFTEILEN: LibGDX teilt das Sheet automatisch auf
         TextureRegion[][] temp = TextureRegion.split(sheet, frameWidth, frameHeight);
         TextureRegion[] frames = new TextureRegion[totalFrames];
         
+        // EINZELBILDER SAMMELN: Alle Bilder in ein Array kopieren
         int index = 0;
         for (int row = 0; row < framesPerCol; row++) {
             for (int col = 0; col < framesPerRow; col++) {
@@ -243,13 +246,16 @@ public class Player {
     }
     
     private void updateState(boolean movingLeft, boolean movingRight, boolean running) {
+        // ZUSTANDSVERWALTUNG: Bestimme aktuellen Spielerzustand basierend auf Bewegung
         if (!onGround) {
+            // IN DER LUFT: Springen oder Fallen
             if (yVelocity > 0) {
                 state = State.JUMP;
             } else {
                 state = State.FALL;
             }
         } else {
+            // AM BODEN: Laufen, Rennen oder Stillstehen
             if (movingLeft || movingRight) {
                 if (running) {
                     state = State.RUN;
@@ -260,6 +266,7 @@ public class Player {
                 state = State.IDLE;
             }
         }
+        // ANIMATION RESET: Wenn Zustand wechselt, Animation von vorne starten
         if (state != previousState) {
             animTime = 0f;
         }
@@ -307,6 +314,7 @@ public class Player {
     }
     
     private TextureRegion getCurrentAnimationFrame() {
+        // ANIMATION AUSWAHL: Wähle die richtige Animation basierend auf Spielerzustand
         Animation<TextureRegion> anim = null;
         boolean loop = true;
         float time = animTime;
@@ -321,15 +329,17 @@ public class Player {
             case DEATH:
                 anim = deathAnim;
                 loop = false;
+                // TODES-ANIMATION: Spezielle Behandlung für einmalige Todes-Animation
                 float deathDuration = (deathAnim != null) ? deathAnim.getAnimationDuration() : 0f;
                 time = Math.min(animTime, Math.max(0f, deathDuration - 0.0001f));
                 break;
             default: anim = idleAnim; loop = true; break;
         }
-        // Defensive: fallback if anim is null or has no frames
+        // SICHERHEIT: Fallback falls Animation nicht geladen wurde
         if (anim == null || anim.getKeyFrames() == null || anim.getKeyFrames().length == 0) {
             return idleAnim.getKeyFrame(0, true);
         }
+        // AKTUELLES BILD: Gib das passende Einzelbild für die aktuelle Zeit zurück
         return anim.getKeyFrame(time, loop);
     }
 

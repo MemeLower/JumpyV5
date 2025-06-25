@@ -19,25 +19,26 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public class EndlessGameScreen extends GameScreen {
+    // LEVEL-GENERIERUNG PARAMETER: Einstellungen für automatische Level-Erstellung
     private static final float WORLD_WIDTH = 1280;
     private static final float WORLD_HEIGHT = 720;
-    private static final float MIN_PLATFORM_SPACING = 200;
-    private static final float MAX_PLATFORM_SPACING = 300;
-    private static final float MIN_PLATFORM_HEIGHT = 150;
-    private static final float MAX_PLATFORM_HEIGHT = 200;
-    private static final float MIN_PLATFORM_WIDTH = 120;
-    private static final float MAX_PLATFORM_WIDTH = 200;
-    private static final float PLATFORM_HEIGHT = 20;
-    private static final float OBSTACLE_SIZE = 30;
-    private static final float SPAWN_DISTANCE = 800;
-    private static final float CLEANUP_DISTANCE = -1000;
-    private static final float MAX_HEIGHT_DIFF = 60;
-    private static final float OBSTACLE_CHANCE = 0.3f;
-    private static final float SCORE_INTERVAL = 0.1f;
-    private static final float MIN_HEIGHT_DIFF = 10f;
-    private static final float MAX_SCORE_PER_INTERVAL = 5f;
-    private static final float VISIBLE_BUFFER = 100f;
-    private static final float PLAYER_START_HEIGHT = 50f; // Height above platform to start player
+    private static final float MIN_PLATFORM_SPACING = 200;    // Mindestabstand zwischen Plattformen
+    private static final float MAX_PLATFORM_SPACING = 300;    // Maximalabstand zwischen Plattformen
+    private static final float MIN_PLATFORM_HEIGHT = 150;     // Minimale Plattform-Höhe
+    private static final float MAX_PLATFORM_HEIGHT = 200;     // Maximale Plattform-Höhe
+    private static final float MIN_PLATFORM_WIDTH = 120;      // Minimale Plattform-Breite
+    private static final float MAX_PLATFORM_WIDTH = 200;      // Maximale Plattform-Breite
+    private static final float PLATFORM_HEIGHT = 20;          // Dicke der Plattformen
+    private static final float OBSTACLE_SIZE = 30;            // Größe der Hindernisse
+    private static final float SPAWN_DISTANCE = 800;          // Wann neue Plattformen erstellt werden
+    private static final float CLEANUP_DISTANCE = -1000;      // Wann alte Objekte gelöscht werden
+    private static final float MAX_HEIGHT_DIFF = 60;          // Maximale Höhendifferenz zwischen Plattformen
+    private static final float OBSTACLE_CHANCE = 0.3f;        // Wahrscheinlichkeit für Hindernisse (30%)
+    private static final float SCORE_INTERVAL = 0.1f;         // Wie oft Score aktualisiert wird
+    private static final float MIN_HEIGHT_DIFF = 10f;         // Minimale Höhendifferenz
+    private static final float MAX_SCORE_PER_INTERVAL = 5f;   // Maximaler Score pro Intervall
+    private static final float VISIBLE_BUFFER = 100f;         // Sichtbarer Puffer
+    private static final float PLAYER_START_HEIGHT = 50f;     // Höhe über Plattform zum Starten
 
     private float lastPlatformX;
     private float lastObstacleX;
@@ -100,29 +101,30 @@ public class EndlessGameScreen extends GameScreen {
     }
 
     private void createNewPlatform() {
+        // PLATTFORM-POSITION: Berechne Position basierend auf letzter Plattform
         float lastX = platforms.size > 0 ? platforms.get(platforms.size - 1).getX() : 0;
         float lastY = platforms.size > 0 ? platforms.get(platforms.size - 1).getY() : 0;
         
-        // Calculate new platform position with random spacing
+        // ZUFÄLLIGER ABSTAND: Neue Plattform mit zufälligem Abstand zur letzten
         float spacing = MathUtils.random(MIN_PLATFORM_SPACING, MAX_PLATFORM_SPACING);
         float newX = lastX + spacing;
         
-        // Calculate new height with a more controlled random variation
+        // ZUFÄLLIGE HÖHE: Kontrollierte zufällige Höhenänderung für spielbare Level
         float heightDiff = MathUtils.random(-MAX_HEIGHT_DIFF, MAX_HEIGHT_DIFF);
         float newY = lastY + heightDiff;
         
-        // Clamp the newY to a tighter range to keep platforms in view
+        // HÖHEN-BEGRENZUNG: Halte Plattformen in spielbarem Bereich
         newY = MathUtils.clamp(newY, MIN_PLATFORM_HEIGHT, MAX_PLATFORM_HEIGHT);
         
-        // Random platform width
+        // ZUFÄLLIGE BREITE: Verschiedene Plattform-Größen für Abwechslung
         float platformWidth = MathUtils.random(MIN_PLATFORM_WIDTH, MAX_PLATFORM_WIDTH);
         
-        // Create the platform
+        // PLATTFORM ERSTELLEN: Neue Plattform zum Spiel hinzufügen
         Platform platform = new Platform(newX, newY, platformWidth, PLATFORM_HEIGHT);
         platforms.add(platform);
         world.createBody(platform.getBodyDef()).createFixture(platform.getFixtureDef());
 
-        // Randomly add an obstacle
+        // HINDERNIS HINZUFÜGEN: Zufällig Hindernisse auf Plattformen platzieren
         if (MathUtils.random() < OBSTACLE_CHANCE) {
             float obstacleX = newX + MathUtils.random(30, platformWidth - 30);
             Obstacle obstacle = new Obstacle(obstacleX, newY + PLATFORM_HEIGHT, OBSTACLE_SIZE, OBSTACLE_SIZE);
@@ -176,9 +178,10 @@ public class EndlessGameScreen extends GameScreen {
     }
 
     private void cleanupOldObjects() {
+        // AUFRÄUMEN: Entferne Objekte die zu weit hinter dem Spieler sind
         float cleanupX = camera.position.x + CLEANUP_DISTANCE;
 
-        // Remove platforms that are too far behind
+        // PLATTFORMEN LÖSCHEN: Entferne alte Plattformen um Speicher zu sparen
         for (int i = platforms.size - 1; i >= 0; i--) {
             Platform platform = platforms.get(i);
             if (platform.getRect().x + platform.getRect().width < cleanupX) {
@@ -186,7 +189,7 @@ public class EndlessGameScreen extends GameScreen {
             }
         }
 
-        // Remove obstacles that are too far behind
+        // HINDERNISSE LÖSCHEN: Entferne alte Hindernisse um Speicher zu sparen
         for (int i = obstacles.size - 1; i >= 0; i--) {
             Obstacle obstacle = obstacles.get(i);
             if (obstacle.getRect().x + obstacle.getRect().width < cleanupX) {

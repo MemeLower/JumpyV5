@@ -160,42 +160,33 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        // Draw far background - scale to fill viewport height
-        float farX = camX * farFactor;
+        // Draw far background STATIC - scale to fill viewport using center-crop (no black bars)
         float viewportHeight = viewport.getWorldHeight();
         float viewportWidth = viewport.getWorldWidth();
-        
-        // Calculate scale to fill viewport height
-        float farScale = viewportHeight / backgroundFar.getHeight();
-        float scaledFarWidth = backgroundFar.getWidth() * farScale;
-        float scaledFarHeight = backgroundFar.getHeight() * farScale;
-        
-        // Draw multiple copies of the far background to cover the width
-        float farStartX = farX - viewportWidth * 2.0f;
-        float farEndX = farX + viewportWidth * 2.0f;
-        
-        for (float x = farStartX; x < farEndX; x += scaledFarWidth) {
-            batch.draw(backgroundFar,
-                x, camera.position.y - viewportHeight / 2,
-                scaledFarWidth, scaledFarHeight);
-        }
+        float imgWidth = backgroundFar.getWidth();
+        float imgHeight = backgroundFar.getHeight();
+        // Calculate scale to cover viewport (center-crop)
+        float scale = Math.max(viewportWidth / imgWidth, viewportHeight / imgHeight);
+        float drawWidth = imgWidth * scale;
+        float drawHeight = imgHeight * scale;
+        float farX = camera.position.x - drawWidth / 2f;
+        float farY = camera.position.y - drawHeight / 2f;
+        batch.draw(backgroundFar, farX, farY, drawWidth, drawHeight);
 
-        // Draw middle layer
+        // Draw middle layer (parallax)
         float midX = camX * midFactor;
         float midWidth = mountainsMid.getWidth();
         float midStartX = midX - viewportWidth * 20.0f;
         float midEndX = midX + viewportWidth * 20.0f;
-        
         for (float x = midStartX; x < midEndX; x += midWidth) {
             batch.draw(mountainsMid, x, 0, midWidth, mountainsMid.getHeight());
         }
 
-        // Draw foreground layer
+        // Draw foreground layer (parallax)
         float nearX = camX * nearFactor;
         float nearWidth = treesNear.getWidth();
         float nearStartX = nearX - viewportWidth * 20.0f;
         float nearEndX = nearX + viewportWidth * 20.0f;
-        
         for (float x = nearStartX; x < nearEndX; x += nearWidth) {
             batch.draw(treesNear, x, 0, nearWidth, treesNear.getHeight());
         }

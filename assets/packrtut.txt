@@ -1,0 +1,6 @@
+./gradlew lwjgl3:dist
+
+Invoke-WebRequest -Uri "https://github.com/libgdx/packr/releases/download/4.0.0/packr-all-4.0.0.jar" -OutFile "packr.jar"
+
+
+java -jar packr.jar packr-config.json

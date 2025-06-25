@@ -52,6 +52,7 @@ Der Spieler sieht in verschiedenen Situationen unterschiedlich aus - beim Laufen
 - Falls etwas schiefgeht, gibt es ein Backup-System
 
 **🎬 Animationen in Aktion:**
+- 
 ![Spieler-Idle](assets/gifs/idlegif.gif)
 ![Spieler-Walk](assets/gifs/walkgif.gif)
 ![Spieler-Run](assets/gifs/rungif.gif)
@@ -98,6 +99,7 @@ Das Spiel merkt sich deine besten Ergebnisse und zeigt eine Rangliste an.
 - Die besten Spieler werden in einer Liste angezeigt
 
 **🏆 Bestenliste im Spiel:**
+-
 ![Bestenliste Preview](assets/RanglistePreview.PNG)
 
 **📁 Wichtige Code-Stellen:**

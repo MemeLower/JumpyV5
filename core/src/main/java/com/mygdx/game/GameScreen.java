@@ -221,7 +221,7 @@ public class GameScreen implements Screen {
         // Draw visual hitbox for testing
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeRenderer.ShapeType.Line);
-        player.drawHitbox(shape);
+        // player.drawHitbox(shape); // (hidden)
         shape.end();
 
         // Draw game objects

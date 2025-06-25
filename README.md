@@ -86,12 +86,6 @@ Im Endlos-Modus erstellt das Spiel automatisch neue Plattformen und Hindernisse.
 - [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L85-L115) - **Neue Plattform erstellen** (Zeile 85-115)
 - [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L170-L190) - **Alte Objekte aufräumen** (Zeile 170-190)
 
-**🖼️ Bilder/Visualisierungen:**
-- [BILD: Automatisch erstellte Plattformen]
-- [BILD: Wie Level-Generierung funktioniert]
-- [BILD: Verschiedene Hindernis-Typen]
-- [BILD: Prozess der Level-Erstellung]
-
 ---
 
 ### 3. 🏆 **Bestenlisten-System**
@@ -110,11 +104,6 @@ Das Spiel merkt sich deine besten Ergebnisse und zeigt eine Rangliste an.
 - [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L20-L45) - **Score hinzufügen** (Zeile 20-45)
 - [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L65-L75) - **Scores speichern** (Zeile 65-75)
 - [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L75-L83) - **Scores laden** (Zeile 75-83)
-
-**🖼️ Bilder/Visualisierungen:**
-- [BILD: Wie Scores gespeichert werden]
-- [BILD: Score-Update Prozess]
-- [BILD: Speicher-System]
 
 ---
 

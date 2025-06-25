@@ -26,6 +26,7 @@ Das Spiel kombiniert klassische Jump'n'Run-Mechaniken mit modernen Spielelemente
 ## Steuerung
 - **A/D** oder **Pfeiltasten**: Links/Rechts bewegen
 - **Leertaste**: Springen
+- **Shift**: Rennen (schneller laufen)
 - **M**: Zurück zum Hauptmenü
 - **R**: Level neu starten
 
@@ -40,15 +41,24 @@ Der Spieler sieht in verschiedenen Situationen unterschiedlich aus - beim Laufen
 - Es wechselt zwischen diesen Bildern, um eine flüssige Animation zu erzeugen
 - Falls etwas schiefgeht, gibt es ein Backup-System
 
+**Animationen in Aktion:**
+![Spieler-Idle](assets/gifs/idlegif.gif)
+![Spieler-Walk](assets/gifs/walkgif.gif)
+![Spieler-Run](assets/gifs/rungif.gif)
+![Spieler-Death](assets/gifs/deathgif.gif)
+
 **Wichtige Code-Stellen:**
 - [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L95-L130) - Animationen laden (Zeile 95-130)
 - [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L140-L170) - Bilder aufteilen (Zeile 140-170)
 - [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L309-L335) - Richtige Animation anzeigen (Zeile 309-335)
 
 **Bilder/Visualisierungen:**
-- [BILD: Verschiedene Animation-Bilder des Spielers]
-- [BILD: Wie Animationen wechseln]
-- [BILD: Code-Beispiel für Animationen]
+- ![Idle Sprite-Sheet](assets/character animations/Idle/Player Idle 48x48.png) - Idle Animation Sprite-Sheet
+- ![Walk Sprite-Sheet](assets/character animations/Walk/PlayerWalk 48x48.png) - Walk Animation Sprite-Sheet  
+- ![Run Sprite-Sheet](assets/character animations/Run/player run 48x48.png) - Run Animation Sprite-Sheet
+- ![Death Sprite-Sheet](assets/character animations/Death/Player Death 48x48.png) - Death Animation Sprite-Sheet
+- [BILD: Animation-Zustandsdiagramm]
+- [BILD: Code-Snippet der loadAnimations()-Funktion]
 - [BILD: Spieler in verschiedenen Posen]
 
 ### 2. 🏗️ Automatische Level-Erstellung
@@ -122,8 +132,17 @@ JumpyV5/
 [BILD: Level 1 Gameplay]
 [BILD: Endlos-Modus in Aktion]
 [BILD: Bestenliste mit Highscores]
+
+### Animation-Demos
+![Spieler-Idle](assets/gifs/idlegif.gif)
+![Spieler-Walk](assets/gifs/walkgif.gif)
+![Spieler-Run](assets/gifs/rungif.gif)
+![Spieler-Death](assets/gifs/deathgif.gif)
+
+### Spielmechaniken
 [BILD: Verschiedene Spieler-Animationen]
 [BILD: Automatisch erstellte Level]
+[BILD: Prozedurale Level-Generierung in Aktion]
 
 ## Spiel starten
 

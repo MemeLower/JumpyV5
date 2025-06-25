@@ -1,38 +1,48 @@
-# Jumpy - Ein LibGDX Plattformspiel
+# 🎮 JUMPY - Ein LibGDX Plattformspiel
 
-## Was ist Jumpy? 🎮
-Jumpy ist ein spannendes Plattformspiel, das ich mit dem LibGDX Framework entwickelt habe. 
+---
+
+## 📖 Was ist Jumpy?
+**Jumpy** ist ein spannendes Plattformspiel, das ich mit dem **LibGDX Framework** entwickelt habe. 
 Das Spiel kombiniert klassische Jump'n'Run-Mechaniken mit modernen Spielelementen.
 
-**Das Besondere:** Es gibt zwei Spielmodi - normale Level und einen endlosen Modus!
+**🎯 Das Besondere:** Es gibt zwei Spielmodi - normale Level und einen endlosen Modus!
 
-## Spielmodi
+---
 
-### 🎯 Level-Modus
+## 🎮 Spielmodi
+
+### 🎯 **Level-Modus**
 - **5 verschiedene Level** mit steigendem Schwierigkeitsgrad
 - Jedes Level hat ein Ziel, das du erreichen musst
 - Perfekt zum Üben und Verbessern
 
-### ♾️ Endlos-Modus  
+### ♾️ **Endlos-Modus**  
 - **Endloses Spielen** - wie weit schaffst du es?
 - Automatisch generierte Level
 - Dein Score wird gespeichert
 
-### 🏆 Bestenliste
+### 🏆 **Bestenliste**
 - Speichere deine **Highscores**
 - Vergleiche dich mit anderen Spielern
 - Versuche, deinen eigenen Rekord zu brechen
 
-## Steuerung
+---
+
+## ⌨️ Steuerung
 - **A/D** oder **Pfeiltasten**: Links/Rechts bewegen
 - **Leertaste**: Springen
 - **Shift**: Rennen (schneller laufen)
 - **M**: Zurück zum Hauptmenü
 - **R**: Level neu starten
 
-## Die drei wichtigsten Techniken im Spiel
+---
 
-### 1. 🎬 Spieler-Animationen
+## 🔧 Die drei wichtigsten Techniken im Spiel
+
+---
+
+### 1. 🎬 **Spieler-Animationen**
 **Was macht es?**
 Der Spieler sieht in verschiedenen Situationen unterschiedlich aus - beim Laufen, Springen, Verletzt werden, etc.
 
@@ -41,27 +51,26 @@ Der Spieler sieht in verschiedenen Situationen unterschiedlich aus - beim Laufen
 - Es wechselt zwischen diesen Bildern, um eine flüssige Animation zu erzeugen
 - Falls etwas schiefgeht, gibt es ein Backup-System
 
-**Animationen in Aktion:**
+**🎬 Animationen in Aktion:**
 ![Spieler-Idle](assets/gifs/idlegif.gif)
 ![Spieler-Walk](assets/gifs/walkgif.gif)
 ![Spieler-Run](assets/gifs/rungif.gif)
 ![Spieler-Death](assets/gifs/deathgif.gif)
 
-**Wichtige Code-Stellen:**
-- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L95-L130) - Animationen laden (Zeile 95-130)
-- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L140-L170) - Bilder aufteilen (Zeile 140-170)
-- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L309-L335) - Richtige Animation anzeigen (Zeile 309-335)
+**📁 Wichtige Code-Stellen:**
+- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L95-L130) - **Animationen laden** (Zeile 95-130)
+- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L140-L170) - **Bilder aufteilen** (Zeile 140-170)
+- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L309-L335) - **Richtige Animation anzeigen** (Zeile 309-335)
 
-**Bilder/Visualisierungen:**
-- ![Idle Sprite-Sheet](assets/character animations/Idle/Player Idle 48x48.png) - Idle Animation Sprite-Sheet
-- ![Walk Sprite-Sheet](assets/character animations/Walk/PlayerWalk 48x48.png) - Walk Animation Sprite-Sheet  
-- ![Run Sprite-Sheet](assets/character animations/Run/player run 48x48.png) - Run Animation Sprite-Sheet
-- ![Death Sprite-Sheet](assets/character animations/Death/Player Death 48x48.png) - Death Animation Sprite-Sheet
-- [BILD: Animation-Zustandsdiagramm]
-- [BILD: Code-Snippet der loadAnimations()-Funktion]
-- [BILD: Spieler in verschiedenen Posen]
+**🖼️ Bilder/Visualisierungen:**
+- ![Idle Sprite-Sheet](assets/character animations/Idle/Player Idle 48x48.png) - **Idle Animation Sprite-Sheet**
+- ![Walk Sprite-Sheet](assets/character animations/Walk/PlayerWalk 48x48.png) - **Walk Animation Sprite-Sheet**  
+- ![Run Sprite-Sheet](assets/character animations/Run/player run 48x48.png) - **Run Animation Sprite-Sheet**
+- ![Death Sprite-Sheet](assets/character animations/Death/Player Death 48x48.png) - **Death Animation Sprite-Sheet**
 
-### 2. 🏗️ Automatische Level-Erstellung
+---
+
+### 2. 🏗️ **Automatische Level-Erstellung**
 **Was macht es?**
 Im Endlos-Modus erstellt das Spiel automatisch neue Plattformen und Hindernisse.
 
@@ -70,18 +79,22 @@ Im Endlos-Modus erstellt das Spiel automatisch neue Plattformen und Hindernisse.
 - Es platziert zufällig Hindernisse auf den Plattformen
 - Alte Plattformen werden gelöscht, um Speicher zu sparen
 
-**Wichtige Code-Stellen:**
-- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L25-L35) - Einstellungen für Level-Erstellung (Zeile 25-35)
-- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L85-L115) - Neue Plattform erstellen (Zeile 85-115)
-- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L170-L190) - Alte Objekte aufräumen (Zeile 170-190)
+![Endlos-Modus Preview](assets/EndlessPreview.PNG)
 
-**Bilder/Visualisierungen:**
+**📁 Wichtige Code-Stellen:**
+- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L25-L35) - **Einstellungen für Level-Erstellung** (Zeile 25-35)
+- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L85-L115) - **Neue Plattform erstellen** (Zeile 85-115)
+- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L170-L190) - **Alte Objekte aufräumen** (Zeile 170-190)
+
+**🖼️ Bilder/Visualisierungen:**
 - [BILD: Automatisch erstellte Plattformen]
 - [BILD: Wie Level-Generierung funktioniert]
 - [BILD: Verschiedene Hindernis-Typen]
 - [BILD: Prozess der Level-Erstellung]
 
-### 3. 🏆 Bestenlisten-System
+---
+
+### 3. 🏆 **Bestenlisten-System**
 **Was macht es?**
 Das Spiel merkt sich deine besten Ergebnisse und zeigt eine Rangliste an.
 
@@ -90,106 +103,26 @@ Das Spiel merkt sich deine besten Ergebnisse und zeigt eine Rangliste an.
 - Wenn du dich verbesserst, wird dein alter Score überschrieben
 - Die besten Spieler werden in einer Liste angezeigt
 
-**Wichtige Code-Stellen:**
-- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L20-L45) - Score hinzufügen (Zeile 20-45)
-- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L65-L75) - Scores speichern (Zeile 65-75)
-- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L75-L83) - Scores laden (Zeile 75-83)
+**🏆 Bestenliste im Spiel:**
+![Bestenliste Preview](assets/RanglistePreview.PNG)
 
-**Bilder/Visualisierungen:**
-- [BILD: Bestenliste im Spiel]
+**📁 Wichtige Code-Stellen:**
+- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L20-L45) - **Score hinzufügen** (Zeile 20-45)
+- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L65-L75) - **Scores speichern** (Zeile 65-75)
+- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L75-L83) - **Scores laden** (Zeile 75-83)
+
+**🖼️ Bilder/Visualisierungen:**
 - [BILD: Wie Scores gespeichert werden]
 - [BILD: Score-Update Prozess]
 - [BILD: Speicher-System]
 
-## Technische Details
+---
 
-### LibGDX Framework
+## ⚙️ Technische Details
+
+### **LibGDX Framework**
 Das Spiel nutzt **LibGDX**, ein beliebtes Java-Spielentwicklungsframework:
-- Funktioniert auf verschiedenen Plattformen
-- Schnelle 2D-Grafik
-- Eingebaute Physik
-- Einfache Verwaltung von Spiel-Assets
-
-### Projektstruktur
-```
-JumpyV5/
-├── core/                    # Hauptspiellogik
-│   └── src/main/java/
-│       └── com/mygdx/game/
-│           ├── Player.java              # Spieler & Animationen
-│           ├── GameScreen.java          # Hauptspielbildschirm
-│           ├── EndlessGameScreen.java   # Endlos-Modus
-│           ├── LeaderboardManager.java  # Bestenlisten
-│           └── ...
-├── assets/                  # Spiel-Assets
-│   ├── character animations/ # Spieler-Animationen
-│   └── ...
-└── lwjgl3/                  # Desktop-Launcher
-```
-
-## Screenshots & Demo
-[BILD: Hauptmenü des Spiels]
-[BILD: Level 1 Gameplay]
-[BILD: Endlos-Modus in Aktion]
-[BILD: Bestenliste mit Highscores]
-
-### Animation-Demos
-![Spieler-Idle](assets/gifs/idlegif.gif)
-![Spieler-Walk](assets/gifs/walkgif.gif)
-![Spieler-Run](assets/gifs/rungif.gif)
-![Spieler-Death](assets/gifs/deathgif.gif)
-
-### Spielmechaniken
-[BILD: Verschiedene Spieler-Animationen]
-[BILD: Automatisch erstellte Level]
-[BILD: Prozedurale Level-Generierung in Aktion]
-
-## Spiel starten
-
-### Was brauchst du?
-- Java 8 oder neuer
-- Gradle (wird automatisch heruntergeladen)
-
-### So startest du das Spiel:
-```bash
-# Projekt herunterladen
-git clone [repository-url]
-cd JumpyV5
-
-# Spiel starten
-./gradlew desktop:run
-```
-
-## Code-Beispiele
-
-### Animation System:
-```java
-// Animationen laden
-private void loadAnimations() {
-    idleSheet = new Texture(Gdx.files.internal("character animations/Idle/Player Idle 48x48.png"));
-    // ... weitere Animationen
-}
-```
-
-### Level Generation:
-```java
-// Neue Plattform erstellen
-private void createNewPlatform() {
-    float spacing = MathUtils.random(MIN_PLATFORM_SPACING, MAX_PLATFORM_SPACING);
-    // ... Plattform erstellen
-}
-```
-
-### Leaderboard:
-```java
-// Score hinzufügen
-public void addScore(String username, float score) {
-    // Score speichern
-}
-```
-
-## Lizenz
-[Lizenz-Informationen hier einfügen]
-
-## Kontakt
-[Kontakt-Informationen hier einfügen]
+- ✅ Funktioniert auf verschiedenen Plattformen
+- ✅ Schnelle 2D-Grafik
+- ✅ Eingebaute Physik
+- ✅ Einfache Verwaltung von Spiel-Assets

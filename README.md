@@ -70,11 +70,11 @@ Der Spieler sieht in verschiedenen Situationen unterschiedlich aus - beim Laufen
 - [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L140-L170) - **Bilder aufteilen** (Zeile 140-170)
 - [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L309-L335) - **Richtige Animation anzeigen** (Zeile 309-335)</font>
 
-<font size="4">**🖼️ Bilder/Visualisierungen:**
+**🖼️ Bilder/Visualisierungen:**
 - ![Idle Sprite-Sheet](assets/character animations/Idle/Player Idle 48x48.png) - **Idle Animation Sprite-Sheet**
 - ![Walk Sprite-Sheet](assets/character animations/Walk/PlayerWalk 48x48.png) - **Walk Animation Sprite-Sheet**  
 - ![Run Sprite-Sheet](assets/character animations/Run/player run 48x48.png) - **Run Animation Sprite-Sheet**
-- ![Death Sprite-Sheet](assets/character animations/Death/Player Death 48x48.png) - **Death Animation Sprite-Sheet**</font>
+- ![Death Sprite-Sheet](assets/character animations/Death/Player Death 48x48.png) - **Death Animation Sprite-Sheet**
 
 ---
 

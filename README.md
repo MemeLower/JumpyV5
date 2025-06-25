@@ -52,10 +52,10 @@ Der Spieler sieht in verschiedenen Situationen unterschiedlich aus - beim Laufen
 - Falls etwas schiefgeht, gibt es ein Backup-System
 
 **🎬 Animationen in Aktion:**
-![Spieler-Idle](assets/gifs/idlegif.gif)
-![Spieler-Walk](assets/gifs/walkgif.gif)
-![Spieler-Run](assets/gifs/rungif.gif)
-![Spieler-Death](assets/gifs/deathgif.gif)
+- [GIF: Spieler-Idle Animation](assets/gifs/idlegif.gif)
+- [GIF: Spieler-Walk Animation](assets/gifs/walkgif.gif)
+- [GIF: Spieler-Run Animation](assets/gifs/rungif.gif)
+- [GIF: Spieler-Death Animation](assets/gifs/deathgif.gif)
 
 **📁 Wichtige Code-Stellen:**
 - [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/main/core/src/main/java/com/mygdx/game/Player.java#L95-L130) - **Animationen laden** (Zeile 95-130)

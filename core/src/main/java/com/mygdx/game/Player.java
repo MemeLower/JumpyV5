@@ -74,6 +74,12 @@ public class Player {
 
     private static final int FEET_OFFSET_PIXELS = 8; // Fine-tuned for perfect feet alignment
 
+    private float deathTimer = 0f;
+    private static final float DEATH_ANIMATION_DURATION = 2.0f; // Increased for testing
+    private boolean isDead = false;
+    private boolean justFell = false;
+    private boolean justDiedToObstacle = false;
+
     public Player(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         
@@ -102,7 +108,7 @@ public class Player {
             jumpSheet = new Texture(Gdx.files.internal("character animations/Jump/player jump 48x48.png"));
             landSheet = new Texture(Gdx.files.internal("character animations/Land/player land 48x48.png"));
             hurtSheet = new Texture(Gdx.files.internal("character animations/Hurt-Damaged/Player Hurt 48x48.png"));
-            deathSheet = new Texture(Gdx.files.internal("character animations/Death/Player Death 64x64.png"));
+            deathSheet = new Texture(Gdx.files.internal("character animations/Death/Player Death 48x48.png"));
             
             // Use fall animation from jump sheet for now, or create a separate fall animation
             fallSheet = jumpSheet; // Temporary - you might want to create a dedicated fall animation
@@ -115,7 +121,8 @@ public class Player {
             TextureRegion[] fallFrames = splitSpritesheet(fallSheet, 48, 48);
             TextureRegion[] landFrames = splitSpritesheet(landSheet, 48, 48);
             TextureRegion[] hurtFrames = splitSpritesheet(hurtSheet, 48, 48);
-            TextureRegion[] deathFrames = splitSpritesheet(deathSheet, 64, 64); // Death uses 64x64
+            TextureRegion[] deathFrames = splitSpritesheet(deathSheet, 48, 48); // Death uses 48x48
+            System.out.println("Death animation frames loaded: " + deathFrames.length);
 
             // Create animations
             idleAnim = new Animation<>(IDLE_DURATION, idleFrames);
@@ -183,33 +190,35 @@ public class Player {
 
     public void update(float delta, Array<Platform> platforms) {
         animTime += delta;
-        
         previousState = state;
-        
+
+        // If dead, only update death animation and timer
+        if (isDead) {
+            deathTimer += delta;
+            if (deathTimer >= DEATH_ANIMATION_DURATION) {
+                gameScreen.resetGame();
+            }
+            return;
+        }
+
         boolean movingLeft = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
         boolean movingRight = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
         boolean running = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
-        
         if (movingLeft) facingRight = false;
         if (movingRight) facingRight = true;
-        
         float visualWidth = SPRITE_WIDTH * CHARACTER_SCALE;
         float visualHeight = SPRITE_HEIGHT * CHARACTER_SCALE;
         float hitboxWidth = visualWidth * HITBOX_WIDTH_RATIO;
         float hitboxHeight = visualHeight * HITBOX_HEIGHT_RATIO;
         float visualX = rect.x - (visualWidth - hitboxWidth) / 2;
         float visualY = rect.y;
-        
-        // Use walkSpeed or runSpeed
         float moveSpeed = running ? runSpeed : walkSpeed;
         if (movingLeft) visualX -= moveSpeed * delta;
         if (movingRight) visualX += moveSpeed * delta;
         rect.x = visualX + (visualWidth - hitboxWidth) / 2;
-        
         yVelocity -= gravity * delta;
         rect.y += yVelocity * delta;
         onGround = false;
-        
         for (Platform platform : platforms) {
             if (yVelocity <= 0 && 
                 rect.y > platform.getRect().y + platform.getRect().height - 15 &&
@@ -222,18 +231,14 @@ public class Player {
                 break;
             }
         }
-        
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
             yVelocity = jumpVelocity;
             onGround = false;
         }
-        
+        // If fallen off screen, trigger death
         if (rect.y < -100) {
-            System.out.println("Player fell off! Resetting...");
-            gameScreen.resetGame();
+            triggerDeath();
         }
-        
-        // State management
         updateState(movingLeft, movingRight, running);
     }
     
@@ -302,17 +307,30 @@ public class Player {
     }
     
     private TextureRegion getCurrentAnimationFrame() {
+        Animation<TextureRegion> anim = null;
+        boolean loop = true;
+        float time = animTime;
         switch (state) {
-            case IDLE: return idleAnim.getKeyFrame(animTime, true);
-            case WALK: return walkAnim.getKeyFrame(animTime, true);
-            case RUN: return runAnim.getKeyFrame(animTime, true);
-            case JUMP: return jumpAnim.getKeyFrame(animTime, false); // Don't loop jump
-            case FALL: return fallAnim.getKeyFrame(animTime, true);
-            case LAND: return landAnim.getKeyFrame(animTime, false); // Don't loop land
-            case HURT: return hurtAnim.getKeyFrame(animTime, true);
-            case DEATH: return deathAnim.getKeyFrame(animTime, false); // Don't loop death
-            default: return idleAnim.getKeyFrame(animTime, true);
+            case IDLE: anim = idleAnim; loop = true; break;
+            case WALK: anim = walkAnim; loop = true; break;
+            case RUN: anim = runAnim; loop = true; break;
+            case JUMP: anim = jumpAnim; loop = false; break;
+            case FALL: anim = fallAnim; loop = true; break;
+            case LAND: anim = landAnim; loop = false; break;
+            case HURT: anim = hurtAnim; loop = true; break;
+            case DEATH:
+                anim = deathAnim;
+                loop = false;
+                float deathDuration = (deathAnim != null) ? deathAnim.getAnimationDuration() : 0f;
+                time = Math.min(animTime, Math.max(0f, deathDuration - 0.0001f));
+                break;
+            default: anim = idleAnim; loop = true; break;
         }
+        // Defensive: fallback if anim is null or has no frames
+        if (anim == null || anim.getKeyFrames() == null || anim.getKeyFrames().length == 0) {
+            return idleAnim.getKeyFrame(0, true);
+        }
+        return anim.getKeyFrame(time, loop);
     }
 
     public float getX() {
@@ -348,5 +366,45 @@ public class Player {
         if (landSheet != null) landSheet.dispose();
         if (hurtSheet != null) hurtSheet.dispose();
         if (deathSheet != null) deathSheet.dispose();
+    }
+
+    public void triggerDeath() {
+        if (!isDead) {
+            System.out.println("Playing death animation");
+            state = State.DEATH;
+            animTime = 0f;
+            deathTimer = 0f;
+            isDead = true;
+            if (rect.y < -100) {
+                justFell = true;
+            } else {
+                justDiedToObstacle = true;
+            }
+        }
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void resetState() {
+        isDead = false;
+        state = State.IDLE;
+        deathTimer = 0f;
+        animTime = 0f;
+    }
+
+    public boolean justFell() {
+        return justFell;
+    }
+    public void clearJustFell() {
+        justFell = false;
+    }
+
+    public boolean justDiedToObstacle() {
+        return justDiedToObstacle;
+    }
+    public void clearJustDiedToObstacle() {
+        justDiedToObstacle = false;
     }
 }

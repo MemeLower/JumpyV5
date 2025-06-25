@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class GameScreen implements Screen {
     final MainGame game;
@@ -33,6 +34,14 @@ public class GameScreen implements Screen {
     private Texture backgroundFar;
     private Texture mountainsMid;
     private Texture treesNear;
+
+    // Add these fields to GameScreen
+    private boolean showFellMessage = false;
+    private float fellMessageTimer = 0f;
+    private static final float FELL_MESSAGE_DURATION = 2.0f;
+    private boolean showDiedMessage = false;
+    private float diedMessageTimer = 0f;
+    private BitmapFont fellFont;
 
     public GameScreen(MainGame game, Array<Platform> platforms, Array<Obstacle> obstacles, Goal goal, int levelNumber) {
         this.game = game;
@@ -57,6 +66,7 @@ public class GameScreen implements Screen {
         player.rect.y = 200;
         player.yVelocity = 0;
         player.onGround = false;
+        player.resetState();
     }
 
     public void resetGame() {
@@ -86,6 +96,11 @@ public class GameScreen implements Screen {
         // Center the camera initially
         camera.position.set(400, 300, 0);
         camera.update();
+
+        // Initialize the font for the 'You fell' message
+        fellFont = new BitmapFont();
+        fellFont.getData().setScale(4f);
+        fellFont.setColor(1, 1, 0, 1); // Yellow
     }
 
     @Override
@@ -106,6 +121,31 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             resetGame();
+        }
+
+        // Show the 'You fell' message if the player just fell
+        if (player.justFell()) {
+            showFellMessage = true;
+            fellMessageTimer = 0f;
+            player.clearJustFell();
+        }
+        if (showFellMessage) {
+            fellMessageTimer += delta;
+            if (fellMessageTimer > FELL_MESSAGE_DURATION) {
+                showFellMessage = false;
+            }
+        }
+        // Show the 'You died' message if the player just died to obstacle
+        if (player.justDiedToObstacle()) {
+            showDiedMessage = true;
+            diedMessageTimer = 0f;
+            player.clearJustDiedToObstacle();
+        }
+        if (showDiedMessage) {
+            diedMessageTimer += delta;
+            if (diedMessageTimer > FELL_MESSAGE_DURATION) {
+                showDiedMessage = false;
+            }
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -150,6 +190,19 @@ public class GameScreen implements Screen {
         // Draw the player (animated)
         player.draw(batch);
 
+        // Draw the 'You fell' or 'You died' message if needed (at the very end, before batch.end)
+        if (showFellMessage) {
+            String msg = "You fell";
+            float x = camera.position.x - 120;
+            float y = camera.position.y + 120;
+            fellFont.draw(batch, msg, x, y);
+        } else if (showDiedMessage) {
+            String msg = "You died";
+            float x = camera.position.x - 120;
+            float y = camera.position.y + 120;
+            fellFont.draw(batch, msg, x, y);
+        }
+
         batch.end();
 
         // Draw visual hitbox for testing
@@ -167,8 +220,9 @@ public class GameScreen implements Screen {
         }
         for (Obstacle obstacle : obstacles) {
             obstacle.draw(shape);
-            if (player.rect.overlaps(obstacle.getRect())) {
-                resetGame();
+            // Only check collision if player is not dead
+            if (!player.isDead() && player.rect.overlaps(obstacle.getRect())) {
+                player.triggerDeath();
             }
         }
 
@@ -206,6 +260,7 @@ public class GameScreen implements Screen {
         backgroundFar.dispose();
         mountainsMid.dispose();
         treesNear.dispose();
+        if (fellFont != null) fellFont.dispose();
         world.dispose();
     }
 

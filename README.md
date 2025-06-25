@@ -41,9 +41,9 @@ Der Spieler sieht in verschiedenen Situationen unterschiedlich aus - beim Laufen
 - Falls etwas schiefgeht, gibt es ein Backup-System
 
 **Wichtige Code-Stellen:**
-- [`Player.java:95-130`](core/src/main/java/com/mygdx/game/Player.java#L95-L130) - Animationen laden
-- [`Player.java:140-170`](core/src/main/java/com/mygdx/game/Player.java#L140-L170) - Bilder aufteilen
-- [`Player.java:309-335`](core/src/main/java/com/mygdx/game/Player.java#L309-L335) - Richtige Animation anzeigen
+- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/Player.java#L95-L130) - Animationen laden (Zeile 95-130)
+- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/Player.java#L140-L170) - Bilder aufteilen (Zeile 140-170)
+- [`Player.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/Player.java#L309-L335) - Richtige Animation anzeigen (Zeile 309-335)
 
 **Bilder/Visualisierungen:**
 - [BILD: Verschiedene Animation-Bilder des Spielers]
@@ -61,9 +61,9 @@ Im Endlos-Modus erstellt das Spiel automatisch neue Plattformen und Hindernisse.
 - Alte Plattformen werden gelöscht, um Speicher zu sparen
 
 **Wichtige Code-Stellen:**
-- [`EndlessGameScreen.java:25-35`](core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L25-L35) - Einstellungen für Level-Erstellung
-- [`EndlessGameScreen.java:85-115`](core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L85-L115) - Neue Plattform erstellen
-- [`EndlessGameScreen.java:170-190`](core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L170-L190) - Alte Objekte aufräumen
+- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L25-L35) - Einstellungen für Level-Erstellung (Zeile 25-35)
+- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L85-L115) - Neue Plattform erstellen (Zeile 85-115)
+- [`EndlessGameScreen.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/EndlessGameScreen.java#L170-L190) - Alte Objekte aufräumen (Zeile 170-190)
 
 **Bilder/Visualisierungen:**
 - [BILD: Automatisch erstellte Plattformen]
@@ -81,9 +81,9 @@ Das Spiel merkt sich deine besten Ergebnisse und zeigt eine Rangliste an.
 - Die besten Spieler werden in einer Liste angezeigt
 
 **Wichtige Code-Stellen:**
-- [`LeaderboardManager.java:20-45`](core/src/main/java/com/mygdx/game/LeaderboardManager.java#L20-L45) - Score hinzufügen
-- [`LeaderboardManager.java:65-75`](core/src/main/java/com/mygdx/game/LeaderboardManager.java#L65-L75) - Scores speichern
-- [`LeaderboardManager.java:75-83`](core/src/main/java/com/mygdx/game/LeaderboardManager.java#L75-L83) - Scores laden
+- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L20-L45) - Score hinzufügen (Zeile 20-45)
+- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L65-L75) - Scores speichern (Zeile 65-75)
+- [`LeaderboardManager.java`](https://github.com/MemeLower/JumpyV5/blob/86f1797a236ff22fac49be275b575809e6c4f52a/core/src/main/java/com/mygdx/game/LeaderboardManager.java#L75-L83) - Scores laden (Zeile 75-83)
 
 **Bilder/Visualisierungen:**
 - [BILD: Bestenliste im Spiel]

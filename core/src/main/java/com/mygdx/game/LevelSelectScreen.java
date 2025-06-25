@@ -114,135 +114,127 @@ public class LevelSelectScreen implements Screen {
      * @return GameScreen mit dem konfigurierten Level
      */
     private GameScreen createLevel1() {
-        // Erstelle Array für Plattformen
         Array<Platform> platforms = new Array<>();
-        // Plattformen mit steigender Höhe für guten Schwierigkeitsgrad
-        platforms.add(new Platform(100, 100, 300, 20));   // Startplattform
-        platforms.add(new Platform(450, 150, 200, 20));   // Erste Erhebung
-        platforms.add(new Platform(700, 200, 150, 20));   // Höchster Punkt
-        platforms.add(new Platform(900, 250, 200, 20));   // Abwärts
-        platforms.add(new Platform(1150, 200, 150, 20));  // Weiter abwärts
-        platforms.add(new Platform(1350, 150, 200, 20));  // Fast am Boden
-        platforms.add(new Platform(1600, 100, 300, 20));  // Finale Plattform
-
-        // Erstelle Array für Hindernisse
+        platforms.add(new Platform(40, 60, 220, 24)); // Spawn
+        platforms.add(new Platform(270, 90, 120, 20));
+        platforms.add(new Platform(420, 130, 100, 20));
+        platforms.add(new Platform(570, 180, 80, 18));
+        platforms.add(new Platform(700, 140, 120, 20));
+        platforms.add(new Platform(860, 110, 100, 20));
+        // Goal platform
+        float goalPlatX = 1000, goalPlatY = 60, goalPlatW = 180, goalPlatH = 24;
+        platforms.add(new Platform(goalPlatX, goalPlatY, goalPlatW, goalPlatH));
         Array<Obstacle> obstacles = new Array<>();
-        // Hindernisse strategisch platzieren
-        obstacles.add(new Obstacle(200, 120, 30, 30));    // Erstes Hindernis
-        obstacles.add(new Obstacle(500, 170, 30, 30));    // Zweites Hindernis
-        obstacles.add(new Obstacle(800, 220, 30, 30));    // Drittes Hindernis
-        obstacles.add(new Obstacle(1200, 220, 30, 30));   // Viertes Hindernis
-
-        // Erstelle das Ziel am Ende des Levels
-        Goal goal = new Goal(1800, 100, 40, 60);
-        
-        // Erstelle und gebe den GameScreen zurück
+        obstacles.add(new Obstacle(320, 110, 30, 30));
+        obstacles.add(new Obstacle(600, 200, 30, 30));
+        float goalW = 40, goalH = 60;
+        Goal goal = new Goal(goalPlatX + goalPlatW/2 - goalW/2, goalPlatY + goalPlatH, goalW, goalH);
         return new GameScreen(game, platforms, obstacles, goal, 1);
     }
 
     private GameScreen createLevel2() {
         Array<Platform> platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 250, 20));
-        platforms.add(new Platform(400, 150, 200, 20));
-        platforms.add(new Platform(650, 200, 150, 20));
-        platforms.add(new Platform(850, 150, 200, 20));
-        platforms.add(new Platform(1100, 200, 150, 20));
-        platforms.add(new Platform(1300, 150, 200, 20));
-        platforms.add(new Platform(1550, 100, 250, 20));
-        platforms.add(new Platform(1850, 150, 200, 20));
-
+        platforms.add(new Platform(40, 60, 220, 24));
+        platforms.add(new Platform(300, 100, 100, 20));
+        platforms.add(new Platform(420, 160, 80, 18));
+        platforms.add(new Platform(540, 210, 60, 16));
+        platforms.add(new Platform(650, 170, 120, 20));
+        platforms.add(new Platform(800, 120, 100, 20));
+        platforms.add(new Platform(950, 90, 180, 22));
+        platforms.add(new Platform(1200, 130, 120, 20));
+        // Goal platform
+        float goalPlatX = 1350, goalPlatY = 60, goalPlatW = 200, goalPlatH = 24;
+        platforms.add(new Platform(goalPlatX, goalPlatY, goalPlatW, goalPlatH));
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(450, 170, 30, 30));
-        obstacles.add(new Obstacle(700, 220, 30, 30));
-        obstacles.add(new Obstacle(900, 170, 30, 30));
-        obstacles.add(new Obstacle(1150, 220, 30, 30));
-        obstacles.add(new Obstacle(1350, 170, 30, 30));
-        obstacles.add(new Obstacle(1600, 120, 30, 30));
-
-        Goal goal = new Goal(2000, 150, 40, 60);
+        obstacles.add(new Obstacle(340, 120, 30, 30));
+        obstacles.add(new Obstacle(570, 230, 30, 30));
+        obstacles.add(new Obstacle(820, 140, 30, 30));
+        float goalW = 40, goalH = 60;
+        Goal goal = new Goal(goalPlatX + goalPlatW/2 - goalW/2, goalPlatY + goalPlatH, goalW, goalH);
         return new GameScreen(game, platforms, obstacles, goal, 2);
     }
 
     private GameScreen createLevel3() {
         Array<Platform> platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 200, 20));
-        platforms.add(new Platform(350, 150, 150, 20));
-        platforms.add(new Platform(550, 200, 150, 20));
-        platforms.add(new Platform(750, 150, 150, 20));
-        platforms.add(new Platform(950, 200, 150, 20));
-        platforms.add(new Platform(1150, 150, 150, 20));
-        platforms.add(new Platform(1350, 200, 150, 20));
-        platforms.add(new Platform(1550, 150, 150, 20));
-        platforms.add(new Platform(1750, 100, 200, 20));
-
+        platforms.add(new Platform(40, 60, 220, 24));
+        platforms.add(new Platform(300, 120, 120, 20));
+        platforms.add(new Platform(470, 170, 80, 18));
+        platforms.add(new Platform(600, 220, 60, 16));
+        platforms.add(new Platform(700, 180, 100, 20));
+        platforms.add(new Platform(850, 140, 120, 20));
+        platforms.add(new Platform(1000, 100, 180, 22));
+        platforms.add(new Platform(1250, 150, 120, 20));
+        platforms.add(new Platform(1400, 200, 80, 18));
+        platforms.add(new Platform(1500, 160, 120, 20));
+        // Goal platform
+        float goalPlatX = 1700, goalPlatY = 60, goalPlatW = 220, goalPlatH = 24;
+        platforms.add(new Platform(goalPlatX, goalPlatY, goalPlatW, goalPlatH));
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(400, 170, 30, 30));
-        obstacles.add(new Obstacle(600, 220, 30, 30));
-        obstacles.add(new Obstacle(800, 170, 30, 30));
-        obstacles.add(new Obstacle(1000, 220, 30, 30));
-        obstacles.add(new Obstacle(1200, 170, 30, 30));
-        obstacles.add(new Obstacle(1400, 220, 30, 30));
-        obstacles.add(new Obstacle(1600, 170, 30, 30));
-
-        Goal goal = new Goal(1900, 100, 40, 60);
+        obstacles.add(new Obstacle(350, 140, 30, 30));
+        obstacles.add(new Obstacle(630, 240, 30, 30));
+        obstacles.add(new Obstacle(870, 160, 30, 30));
+        obstacles.add(new Obstacle(1420, 220, 30, 30));
+        float goalW = 40, goalH = 60;
+        Goal goal = new Goal(goalPlatX + goalPlatW/2 - goalW/2, goalPlatY + goalPlatH, goalW, goalH);
         return new GameScreen(game, platforms, obstacles, goal, 3);
     }
 
     private GameScreen createLevel4() {
         Array<Platform> platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 150, 20));
-        platforms.add(new Platform(300, 150, 150, 20));
-        platforms.add(new Platform(500, 200, 150, 20));
-        platforms.add(new Platform(700, 150, 150, 20));
-        platforms.add(new Platform(900, 200, 150, 20));
-        platforms.add(new Platform(1100, 150, 150, 20));
-        platforms.add(new Platform(1300, 200, 150, 20));
-        platforms.add(new Platform(1500, 150, 150, 20));
-        platforms.add(new Platform(1700, 200, 150, 20));
-        platforms.add(new Platform(1900, 150, 150, 20));
-
+        platforms.add(new Platform(40, 60, 220, 24));
+        platforms.add(new Platform(300, 110, 100, 20));
+        platforms.add(new Platform(420, 170, 80, 18));
+        platforms.add(new Platform(540, 220, 60, 16));
+        platforms.add(new Platform(650, 180, 120, 20));
+        platforms.add(new Platform(800, 140, 100, 20));
+        platforms.add(new Platform(950, 100, 180, 22));
+        platforms.add(new Platform(1200, 150, 120, 20));
+        platforms.add(new Platform(1350, 200, 80, 18));
+        platforms.add(new Platform(1450, 160, 120, 20));
+        platforms.add(new Platform(1600, 120, 200, 24));
+        platforms.add(new Platform(1850, 170, 120, 20));
+        // Goal platform
+        float goalPlatX = 2050, goalPlatY = 60, goalPlatW = 240, goalPlatH = 24;
+        platforms.add(new Platform(goalPlatX, goalPlatY, goalPlatW, goalPlatH));
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(350, 170, 30, 30));
-        obstacles.add(new Obstacle(550, 220, 30, 30));
-        obstacles.add(new Obstacle(750, 170, 30, 30));
-        obstacles.add(new Obstacle(950, 220, 30, 30));
-        obstacles.add(new Obstacle(1150, 170, 30, 30));
-        obstacles.add(new Obstacle(1350, 220, 30, 30));
-        obstacles.add(new Obstacle(1550, 170, 30, 30));
-        obstacles.add(new Obstacle(1750, 220, 30, 30));
-
-        Goal goal = new Goal(2050, 150, 40, 60);
+        obstacles.add(new Obstacle(340, 130, 30, 30));
+        obstacles.add(new Obstacle(570, 240, 30, 30));
+        obstacles.add(new Obstacle(820, 160, 30, 30));
+        obstacles.add(new Obstacle(1370, 220, 30, 30));
+        obstacles.add(new Obstacle(1700, 190, 30, 30));
+        float goalW = 40, goalH = 60;
+        Goal goal = new Goal(goalPlatX + goalPlatW/2 - goalW/2, goalPlatY + goalPlatH, goalW, goalH);
         return new GameScreen(game, platforms, obstacles, goal, 4);
     }
 
     private GameScreen createLevel5() {
         Array<Platform> platforms = new Array<>();
-        platforms.add(new Platform(100, 100, 120, 20));
-        platforms.add(new Platform(270, 150, 120, 20));
-        platforms.add(new Platform(440, 200, 120, 20));
-        platforms.add(new Platform(610, 150, 120, 20));
-        platforms.add(new Platform(780, 200, 120, 20));
-        platforms.add(new Platform(950, 150, 120, 20));
-        platforms.add(new Platform(1120, 200, 120, 20));
-        platforms.add(new Platform(1290, 150, 120, 20));
-        platforms.add(new Platform(1460, 200, 120, 20));
-        platforms.add(new Platform(1630, 150, 120, 20));
-        platforms.add(new Platform(1800, 200, 120, 20));
-        platforms.add(new Platform(1970, 150, 120, 20));
-
+        platforms.add(new Platform(40, 60, 220, 24));
+        platforms.add(new Platform(300, 120, 120, 20));
+        platforms.add(new Platform(470, 170, 80, 18));
+        platforms.add(new Platform(600, 220, 60, 16));
+        platforms.add(new Platform(700, 180, 100, 20));
+        platforms.add(new Platform(850, 140, 120, 20));
+        platforms.add(new Platform(1000, 100, 180, 22));
+        platforms.add(new Platform(1250, 150, 120, 20));
+        platforms.add(new Platform(1400, 200, 80, 18));
+        platforms.add(new Platform(1500, 160, 120, 20));
+        platforms.add(new Platform(1650, 120, 200, 24));
+        platforms.add(new Platform(1850, 170, 120, 20));
+        platforms.add(new Platform(2000, 210, 100, 18));
+        platforms.add(new Platform(2150, 180, 120, 20));
+        // Goal platform
+        float goalPlatX = 2350, goalPlatY = 60, goalPlatW = 260, goalPlatH = 24;
+        platforms.add(new Platform(goalPlatX, goalPlatY, goalPlatW, goalPlatH));
         Array<Obstacle> obstacles = new Array<>();
-        obstacles.add(new Obstacle(320, 170, 30, 30));
-        obstacles.add(new Obstacle(490, 220, 30, 30));
-        obstacles.add(new Obstacle(660, 170, 30, 30));
-        obstacles.add(new Obstacle(830, 220, 30, 30));
-        obstacles.add(new Obstacle(1000, 170, 30, 30));
-        obstacles.add(new Obstacle(1170, 220, 30, 30));
-        obstacles.add(new Obstacle(1340, 170, 30, 30));
-        obstacles.add(new Obstacle(1510, 220, 30, 30));
-        obstacles.add(new Obstacle(1680, 170, 30, 30));
-        obstacles.add(new Obstacle(1850, 220, 30, 30));
-
-        Goal goal = new Goal(2100, 150, 40, 60);
+        obstacles.add(new Obstacle(350, 140, 30, 30));
+        obstacles.add(new Obstacle(630, 240, 30, 30));
+        obstacles.add(new Obstacle(870, 160, 30, 30));
+        obstacles.add(new Obstacle(1420, 220, 30, 30));
+        obstacles.add(new Obstacle(1700, 190, 30, 30));
+        obstacles.add(new Obstacle(2100, 230, 30, 30));
+        float goalW = 40, goalH = 60;
+        Goal goal = new Goal(goalPlatX + goalPlatW/2 - goalW/2, goalPlatY + goalPlatH, goalW, goalH);
         return new GameScreen(game, platforms, obstacles, goal, 5);
     }
 

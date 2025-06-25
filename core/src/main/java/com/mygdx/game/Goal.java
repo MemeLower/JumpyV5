@@ -29,12 +29,31 @@ public class Goal {
      * @param shape ShapeRenderer für das Zeichnen der Formen
      */
     public void draw(ShapeRenderer shape) {
-        // Zeichne die Flagge in Gold
-        shape.setColor(1, 0.84f, 0, 1);  // Goldene Farbe (RGBA)
-        shape.rect(rect.x, rect.y, rect.width, rect.height);  // Rechteckige Flagge
-        
-        // Zeichne den Flaggenmast in Grau
-        shape.setColor(0.5f, 0.5f, 0.5f, 1);  // Graue Farbe
-        shape.rect(rect.x + rect.width/2 - 2, rect.y, 4, rect.height);  // Dünner Mast in der Mitte
+        float poleWidth = rect.width * 0.18f;
+        float poleX = rect.x + rect.width * 0.5f - poleWidth * 0.5f;
+        float poleY = rect.y;
+        float poleHeight = rect.height * 1.2f;
+        // Draw pole (white)
+        shape.setColor(1, 1, 1, 1);
+        shape.rect(poleX, poleY, poleWidth, poleHeight);
+
+        // Draw gold ball at top
+        shape.setColor(1, 0.85f, 0.2f, 1);
+        shape.circle(poleX + poleWidth / 2, poleY + poleHeight, poleWidth * 1.2f, 20);
+
+        // Draw green base
+        shape.setColor(0.2f, 0.7f, 0.2f, 1);
+        shape.rect(poleX - poleWidth * 0.7f, poleY - rect.height * 0.18f, poleWidth * 2.4f, rect.height * 0.18f);
+
+        // Draw flag (green triangle) near the top, waving right
+        float flagY = poleY + poleHeight * 0.82f;
+        float flagW = rect.width * 0.7f;
+        float flagH = rect.height * 0.32f;
+        shape.setColor(0.2f, 0.7f, 0.2f, 1);
+        shape.triangle(
+            poleX + poleWidth, flagY,
+            poleX + poleWidth + flagW, flagY + flagH * 0.5f,
+            poleX + poleWidth, flagY + flagH
+        );
     }
 } 

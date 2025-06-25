@@ -160,16 +160,29 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        // Draw far background
+        // Draw far background - scale to fill viewport height
         float farX = camX * farFactor;
-        batch.draw(backgroundFar,
-            farX - backgroundFar.getWidth() / 2, 0,
-            backgroundFar.getWidth(), backgroundFar.getHeight());
+        float viewportHeight = viewport.getWorldHeight();
+        float viewportWidth = viewport.getWorldWidth();
+        
+        // Calculate scale to fill viewport height
+        float farScale = viewportHeight / backgroundFar.getHeight();
+        float scaledFarWidth = backgroundFar.getWidth() * farScale;
+        float scaledFarHeight = backgroundFar.getHeight() * farScale;
+        
+        // Draw multiple copies of the far background to cover the width
+        float farStartX = farX - viewportWidth * 2.0f;
+        float farEndX = farX + viewportWidth * 2.0f;
+        
+        for (float x = farStartX; x < farEndX; x += scaledFarWidth) {
+            batch.draw(backgroundFar,
+                x, camera.position.y - viewportHeight / 2,
+                scaledFarWidth, scaledFarHeight);
+        }
 
         // Draw middle layer
         float midX = camX * midFactor;
         float midWidth = mountainsMid.getWidth();
-        float viewportWidth = viewport.getWorldWidth();
         float midStartX = midX - viewportWidth * 20.0f;
         float midEndX = midX + viewportWidth * 20.0f;
         

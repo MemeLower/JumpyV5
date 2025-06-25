@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public class EndlessGameScreen extends GameScreen {
     private static final float WORLD_WIDTH = 1280;
@@ -23,7 +24,7 @@ public class EndlessGameScreen extends GameScreen {
     private static final float MIN_PLATFORM_SPACING = 200;
     private static final float MAX_PLATFORM_SPACING = 300;
     private static final float MIN_PLATFORM_HEIGHT = 150;
-    private static final float MAX_PLATFORM_HEIGHT = 400;
+    private static final float MAX_PLATFORM_HEIGHT = 200;
     private static final float MIN_PLATFORM_WIDTH = 120;
     private static final float MAX_PLATFORM_WIDTH = 200;
     private static final float PLATFORM_HEIGHT = 20;
@@ -48,6 +49,7 @@ public class EndlessGameScreen extends GameScreen {
     private BitmapFont font;
     private SpriteBatch scoreBatch;
     private OrthographicCamera uiCamera;
+    private ShapeRenderer uiShapeRenderer; // For score background
 
     public EndlessGameScreen(MainGame game) {
         super(game, new Array<>(), new Array<>(), null, -1);
@@ -60,6 +62,7 @@ public class EndlessGameScreen extends GameScreen {
         this.scoreBatch = new SpriteBatch();
         this.uiCamera = new OrthographicCamera();
         this.uiCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.uiShapeRenderer = new ShapeRenderer();
         createInitialPlatforms();
     }
 
@@ -78,6 +81,10 @@ public class EndlessGameScreen extends GameScreen {
     @Override
     public void show() {
         super.show();
+        
+        // Set up improved font for score display
+        font.getData().setScale(2.5f); // Much bigger font
+        font.setColor(1, 1, 1, 1); // White color
         
         // Position player above the starting platform
         if (platforms.size > 0) {
@@ -152,9 +159,19 @@ public class EndlessGameScreen extends GameScreen {
         cleanupOldObjects();
 
         // Draw score with UI camera (fixed position)
+        String scoreText = "Score: " + (int)score;
+        GlyphLayout layout = new GlyphLayout(font, scoreText);
+        float textWidth = layout.width;
+        float textHeight = layout.height;
+        float padding = 20f;
+        float bgX = 30;
+        float bgY = Gdx.graphics.getHeight() - textHeight - padding * 1.5f;
+
+        // Only draw the text, no background
         scoreBatch.setProjectionMatrix(uiCamera.combined);
         scoreBatch.begin();
-        font.draw(scoreBatch, "Score: " + (int)score, 20, Gdx.graphics.getHeight() - 20);
+        font.setColor(1, 1, 0, 1); // Bright yellow
+        font.draw(scoreBatch, scoreText, bgX + padding, bgY + textHeight + (padding / 2));
         scoreBatch.end();
     }
 
@@ -195,5 +212,6 @@ public class EndlessGameScreen extends GameScreen {
         super.dispose();
         font.dispose();
         scoreBatch.dispose();
+        uiShapeRenderer.dispose();
     }
 }
